@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Aniyah Monae</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#ffffff; --ink:#1a1a1a; --muted:#6f6f6f; --line:#e9e9e9;
+    --sans:'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --serif:'Cormorant Garamond', Georgia, serif;
+    --maxw:1180px; --gut:clamp(20px,5vw,64px);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;line-height:1.65;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  img{display:block;width:100%;height:auto;}
+
+  /* Header */
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--line);}
+  .masthead{max-width:var(--maxw);margin:0 auto;padding:26px var(--gut) 18px;display:flex;flex-direction:column;align-items:center;gap:16px;}
+  .brand{font-weight:300;letter-spacing:.42em;font-size:clamp(18px,2.4vw,26px);text-transform:uppercase;padding-left:.42em;cursor:pointer;}
+  nav.primary{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:clamp(14px,2.4vw,30px);font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;}
+  nav.primary button{background:none;border:none;cursor:pointer;font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--muted);padding:4px 0;position:relative;transition:color .25s ease;}
+  nav.primary button:hover,nav.primary .active{color:var(--ink);}
+  nav.primary .active::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:1px;background:var(--ink);}
+  .folder{position:relative;}
+  .folder-menu{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%) translateY(6px);background:#fff;border:1px solid var(--line);padding:10px 0;min-width:184px;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .2s ease,transform .2s ease;box-shadow:0 18px 40px -24px rgba(0,0,0,.4);}
+  .folder:hover .folder-menu,.folder.open .folder-menu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);}
+  .folder-menu button{text-align:center;padding:8px 22px !important;color:var(--muted);width:100%;}
+  .folder-menu button:hover{color:var(--ink);}
+  .caret{display:inline-block;margin-left:6px;font-size:9px;transform:translateY(-1px);}
+
+  /* Page shell */
+  main{max-width:var(--maxw);margin:0 auto;padding:clamp(40px,7vw,86px) var(--gut) 40px;min-height:60vh;}
+  .page{display:none;animation:fade .5s ease;}
+  .page.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  .page-title{font-weight:300;text-transform:uppercase;letter-spacing:.32em;font-size:13px;color:var(--muted);text-align:center;margin:0 0 clamp(30px,5vw,54px);}
+
+  /* Galleries */
+  .grid{display:grid;gap:clamp(18px,3vw,38px);grid-template-columns:repeat(auto-fill,minmax(260px,1fr));}
+  .tile{cursor:pointer;}
+  .tile figure{margin:0;}
+  .tile .frame{position:relative;overflow:hidden;background:#f3f3f1;aspect-ratio:4/5;}
+  .tile .frame img{width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);}
+  .tile:hover .frame img{transform:scale(1.04);}
+  .placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#efeeec 0%,#e4e3df 100%);color:#bdbbb3;font-family:var(--serif);font-style:italic;font-size:40px;letter-spacing:.04em;}
+  .caption{text-align:center;margin-top:14px;font-family:var(--serif);font-style:italic;font-size:19px;color:#2a2a2a;}
+  .count{display:block;font-family:var(--sans);font-style:normal;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#aeaca5;margin-top:5px;}
+
+  .wall{column-count:3;column-gap:clamp(14px,2.4vw,26px);}
+  .wall figure{margin:0 0 clamp(14px,2.4vw,26px);break-inside:avoid;background:#f3f3f1;cursor:pointer;overflow:hidden;}
+  .wall img{width:100%;height:auto;transition:opacity .3s ease;}
+  .wall figure:hover img{opacity:.86;}
+  @media(max-width:860px){.wall{column-count:2;}}
+  @media(max-width:520px){.wall{column-count:1;}}
+
+  .section-head{font-family:var(--serif);font-style:italic;font-size:clamp(24px,4vw,34px);text-align:center;margin:0 0 clamp(26px,4vw,44px);font-weight:500;}
+  .crumb{text-align:center;margin:-14px 0 34px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;}
+  .crumb button{background:none;border:none;cursor:pointer;color:var(--muted);font:inherit;letter-spacing:inherit;text-transform:inherit;}
+  .crumb button:hover{color:var(--ink);}
+  .empty-note{text-align:center;color:#a8a6a0;font-family:var(--serif);font-style:italic;font-size:16px;margin:10px auto 30px;max-width:520px;}
+
+  /* Biography */
+  .bio{max-width:760px;margin:0 auto;}
+  .bio p{margin:0 0 1.5em;font-size:16px;color:#2c2c2c;}
+  .bio-portrait{max-width:620px;margin:clamp(36px,6vw,64px) auto;}
+  .bio-portrait img{aspect-ratio:3/2;object-fit:cover;background:#f3f3f1;}
+  .cv{max-width:780px;margin:clamp(30px,5vw,52px) auto 0;}
+  .cv h3{text-align:center;font-weight:400;text-transform:uppercase;letter-spacing:.3em;font-size:13px;margin:0 0 8px;color:var(--muted);}
+  .cv .loc{text-align:center;color:var(--muted);font-size:13px;letter-spacing:.04em;margin:0 0 26px;}
+  .cv h4{font-weight:500;letter-spacing:.16em;text-transform:uppercase;font-size:12px;color:#111;margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+  .cv-row{display:grid;grid-template-columns:84px 1fr;gap:18px;padding:11px 0;border-bottom:1px solid #f3f3f3;}
+  .cv-row .yr{font-size:12.5px;color:var(--muted);letter-spacing:.04em;padding-top:2px;}
+  .cv-row .role{font-weight:400;color:#1d1d1d;font-size:15px;}
+  .cv-row .role span{display:block;color:var(--muted);font-size:13.5px;margin-top:2px;}
+  @media(max-width:520px){.cv-row{grid-template-columns:64px 1fr;gap:12px;}}
+
+  /* Press */
+  .press{max-width:820px;margin:0 auto;}
+  .press .lede{font-family:var(--serif);font-style:italic;font-size:19px;text-align:center;color:#444;max-width:660px;margin:0 auto 46px;line-height:1.6;}
+  .press-group{margin-bottom:40px;}
+  .press-group h4{font-weight:500;font-size:15px;letter-spacing:.02em;color:#111;margin:0 0 16px;line-height:1.4;}
+  .press-group .cite{font-size:13.5px;color:#555;line-height:1.7;padding:9px 0;border-bottom:1px solid #f3f3f3;}
+  .press-group .cite a{color:#3a5a8a;word-break:break-word;}
+  .press-group .cite a:hover{text-decoration:underline;}
+
+  /* Contact */
+  .contact{max-width:560px;margin:6vh auto;text-align:center;}
+  .contact .label{font-size:12px;text-transform:uppercase;letter-spacing:.22em;color:var(--muted);margin-bottom:6px;}
+  .contact h2{font-weight:400;text-transform:uppercase;letter-spacing:.22em;font-size:15px;margin:0 0 40px;}
+  .contact a{color:#1a1a1a;border-bottom:1px solid #cfcfcf;padding-bottom:1px;}
+  .contact a:hover{border-color:#1a1a1a;}
+
+  footer{border-top:1px solid var(--line);margin-top:60px;padding:34px var(--gut);text-align:center;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#9a9a9a;}
+
+  /* Lightbox */
+  .lb{position:fixed;inset:0;z-index:100;background:rgba(255,255,255,.97);display:none;align-items:center;justify-content:center;}
+  .lb.open{display:flex;}
+  .lb img{max-width:90vw;max-height:84vh;width:auto;height:auto;object-fit:contain;box-shadow:0 30px 80px -40px rgba(0,0,0,.5);}
+  .lb-close,.lb-nav{position:absolute;background:none;border:none;cursor:pointer;color:#1a1a1a;font-family:var(--sans);}
+  .lb-close{top:22px;right:26px;font-size:26px;line-height:1;font-weight:300;}
+  .lb-nav{top:50%;transform:translateY(-50%);font-size:40px;font-weight:200;padding:18px;opacity:.6;transition:opacity .2s;}
+  .lb-nav:hover{opacity:1;}
+  .lb-prev{left:14px;} .lb-next{right:14px;}
+  .lb-meta{position:absolute;bottom:22px;left:0;right:0;text-align:center;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
+  @media(max-width:520px){.lb-nav{font-size:30px;padding:10px;}}
+
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="masthead">
+    <div class="brand" onclick="go('home')">Aniyah Monae</div>
+    <nav class="primary" id="nav">
+      <div class="folder" id="artworkFolder">
+        <button onclick="toggleFolder(event)" data-page="artwork">Artwork<span class="caret">▾</span></button>
+        <div class="folder-menu">
+          <button onclick="go('installation')">Installation</button>
+          <button onclick="go('conceptual')">Conceptual</button>
+          <button onclick="go('exhibition')">Exhibition</button>
+          <button onclick="go('costume')">Costume</button>
+          <button onclick="go('illustration')">Illustration</button>
+          <button onclick="go('tailoring')">Tailoring</button>
+          <button onclick="go('fashion')">Fashion</button>
+        </div>
+      </div>
+      <button data-page="biography" onclick="go('biography')">Biography</button>
+      <button data-page="press" onclick="go('press')">Press</button>
+      <button data-page="contact" onclick="go('contact')">Contact</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="page active" id="page-home">
+    <p class="page-title">Artwork</p>
+    <div class="grid" id="home-grid"></div>
+  </section>
+
+  <section class="page" id="page-installation"><p class="page-title">Installation</p><div class="crumb"><button onclick="go('home')">← Back</button></div><div id="gallery-installation"></div></section>
+  <section class="page" id="page-conceptual"><p class="page-title">Conceptual</p><div class="crumb"><button onclick="go('home')">← Back</button></div><div id="gallery-conceptual"></div></section>
+  <section class="page" id="page-exhibition"><p class="page-title">Exhibition</p><div id="gallery-exhibition"></div></section>
+  <section class="page" id="page-costume"><p class="page-title">Costume</p><div class="crumb"><button onclick="go('home')">← Back</button></div><div id="gallery-costume"></div></section>
+  <section class="page" id="page-illustration"><p class="page-title">Illustration</p><div class="crumb"><button onclick="go('home')">← Back</button></div><div id="gallery-illustration"></div></section>
+  <section class="page" id="page-tailoring"><p class="page-title">Tailoring</p><div id="gallery-tailoring"></div></section>
+  <section class="page" id="page-fashion"><p class="page-title">Fashion</p><div class="crumb"><button onclick="go('home')">← Back</button></div><div id="gallery-fashion"></div></section>
+
+  <!-- BIOGRAPHY -->
+  <section class="page" id="page-biography">
+    <div class="bio">
+      <p>Aniyah Monae is an emerging multidisciplinary artist and aspiring master cutter from Louisville, Kentucky. Her practice spans installation art, conceptual art, costume design, tailoring, garment construction, pattern making, weaving, illustration, and textile-based art, with a focus on the relationship between technical craftsmanship, material knowledge, and cultural storytelling.</p>
+      <p>Working across fashion, theatre, opera, and contemporary art contexts, Aniyah approaches making as both a skilled trade and an artistic practice. Her work is grounded in a commitment to traditional craft techniques while exploring their relevance within contemporary culture. Through garments, textiles, and mixed-media works, she investigates identity, labor, history, and the social significance of clothing.</p>
+      <p>She is particularly interested in the preservation of traditional making methods, the intersection of craft and contemporary art, and the role of clothing as a site of personal and collective memory. Drawing from experiences across performance, fashion, and visual art, her work bridges disciplines while remaining rooted in the belief that mastery is built through sustained practice, technical rigor, and a lifelong dedication to learning.</p>
+    </div>
+    <div class="bio-portrait"><img id="bio-portrait-img" alt="Aniyah Monae" loading="lazy"></div>
+    <div class="cv">
+      <h3>CV</h3>
+      <p class="loc">Louisville, Kentucky, USA</p>
+
+      <h4>Theatre &amp; Performance</h4>
+      <div class="cv-row"><div class="yr">2026</div><div class="role">Costume Designer<span>Pipeline — University of Louisville Theatre Arts, Louisville, KY</span></div></div>
+      <div class="cv-row"><div class="yr">2024–25</div><div class="role">Costume Designer<span>This Little Light of Mine — Kentucky Opera, Louisville, KY</span></div></div>
+      <div class="cv-row"><div class="yr">2022</div><div class="role">Costume Designer<span>Gloria — University of Louisville Theatre Arts, Louisville, KY</span></div></div>
+      <div class="cv-row"><div class="yr">2022</div><div class="role">Assistant Costume Designer<span>The Gift of Magi — Kentucky Opera, Louisville, KY</span></div></div>
+      <div class="cv-row"><div class="yr">2022</div><div class="role">Co-Designer<span>The Unknown Project — IDEAS xLab, Louisville, KY</span></div></div>
+      <div class="cv-row"><div class="yr">2022</div><div class="role">Costume Designer<span>Don't Do Drugs Kids — University of Louisville Theatre Arts, Louisville, KY</span></div></div>
+      <div class="cv-row"><div class="yr">2022</div><div class="role">Costume Designer<span>The Proposal — University of Louisville Theatre Arts, Louisville, KY</span></div></div>
+      <div class="cv-row"><div class="yr">2022</div><div class="role">Assistant Costume Designer<span>Afromemory — University of Louisville Theatre Arts, Louisville, KY</span></div></div>
+      <div class="cv-row"><div class="yr">2022</div><div class="role">Stitcher<span>Orfeo ed Euridice — Kentucky Opera, Louisville, KY</span></div></div>
+      <div class="cv-row"><div class="yr">2022</div><div class="role">Costumer on Set<span>Slap Me! I Must Be Dreaming — Independent Short Film, Louisville, KY</span></div></div>
+      <div class="cv-row"><div class="yr">2021</div><div class="role">Assistant Designer / Seamstress<span>Holiday Celebration — Kentucky Opera, Louisville, KY</span></div></div>
+      <div class="cv-row"><div class="yr">2021</div><div class="role">Co-Designer<span>Sherlock Holmes — Trinity High School Theatre Arts, Louisville, KY</span></div></div>
+      <div class="cv-row"><div class="yr">2021</div><div class="role">Seamstress<span>BET Awards Performance — Michael Schmidt Studios, Los Angeles, CA</span></div></div>
+
+      <h4>Fashion</h4>
+      <div class="cv-row"><div class="yr">2025</div><div class="role">Talent / Creative Assistant<span>Reebok x Walker Wear Collaboration — Manhattan, NY</span></div></div>
+      <div class="cv-row"><div class="yr">2024</div><div class="role">Creative Director &amp; Stylist<span>Walker Wear Editorial Campaigns — Los Angeles, CA / Brooklyn, NY</span></div></div>
+      <div class="cv-row"><div class="yr">2023–24</div><div class="role">Creative Assistant<span>Walker Wear — Brooklyn, NY</span></div></div>
+      <div class="cv-row"><div class="yr">2023–24</div><div class="role">Program Mentor<span>Build Your Own Brand Program — Brooklyn, NY</span></div></div>
+      <div class="cv-row"><div class="yr">2023</div><div class="role">Assistant Designer &amp; Seamstress<span>The Web Has No Weaver — New York Fashion Week</span></div></div>
+      <div class="cv-row"><div class="yr">2023</div><div class="role">Fashion Artist &amp; Stylist<span>Creative Playground — Louisville, KY</span></div></div>
+      <div class="cv-row"><div class="yr">2023</div><div class="role">Seamstress<span>KY Boy Tyler — Louisville, KY</span></div></div>
+      <div class="cv-row"><div class="yr">2022</div><div class="role">Fashion Artist<span>The Hite Art &amp; Design Annual Student Exhibition — Louisville, KY</span></div></div>
+      <div class="cv-row"><div class="yr">2022</div><div class="role">Alterations Specialist / Seamstress<span>David's Bridal — Louisville, KY</span></div></div>
+
+      <h4>Tailoring &amp; Textile Training</h4>
+      <div class="cv-row"><div class="yr">2025–</div><div class="role">Tailor<span>RODES For Him &amp; For Her — Louisville, KY</span></div></div>
+      <div class="cv-row"><div class="yr">2025–</div><div class="role">Studio Intern<span>The Little Loomhouse — Louisville, KY</span></div></div>
+      <div class="cv-row"><div class="yr">2025–26</div><div class="role">Tailor Apprentice<span>Victory Pass Equestrian Apparel — Louisville, KY</span></div></div>
+      <div class="cv-row"><div class="yr">2025</div><div class="role">Tailor Apprentice<span>U.S. Tailor — Louisville, KY</span></div></div>
+      <div class="cv-row"><div class="yr">2024</div><div class="role">Tailor Intern<span>Studio Unbiased — Los Angeles, CA</span></div></div>
+      <div class="cv-row"><div class="yr">2020–22</div><div class="role">Costume Shop Apprentice<span>University of Louisville Theatre Arts — Louisville, KY</span></div></div>
+
+      <h4>Education</h4>
+      <div class="cv-row"><div class="yr">2022</div><div class="role">B.S. in Theatre Arts — Costume Design &amp; Technology<span>University of Louisville — Louisville, KY</span></div></div>
+    </div>
+  </section>
+
+  <!-- PRESS -->
+  <section class="page" id="page-press">
+    <p class="page-title">Press</p>
+    <div class="press">
+      <p class="lede">Selected media coverage of exhibitions, performances, productions, and collaborative projects to which Aniyah contributed as an artist, costume designer, co-designer, creative assistant, seamstress, or talent.</p>
+      <div class="press-group">
+        <h4>Pipeline (Costume Designer) — University of Louisville Theatre Arts, 2026</h4>
+        <div class="cite">WHAS11, “UofL Honors Black History Month with Their Production of ‘Pipeline’,” Great Day Live, Feb. 2025. <a href="https://www.whas11.com/article/features/great-day-live/uofl-honors-black-history-month-with-their-production-of-pipeline/417-409e6719-43e1-40a5-a60f-d21dadc78665" target="_blank" rel="noopener">Link</a></div>
+        <div class="cite">University of Louisville, “The Department of Theatre Arts and African American Theatre Program Presents ‘Pipeline’ by Dominique Morisseau,” College of Arts &amp; Sciences, Feb. 2025. <a href="https://artsandsciences.louisville.edu/news/department-theatre-arts-and-african-american-theatre-program-presents-pipeline-dominique" target="_blank" rel="noopener">Link</a></div>
+        <div class="cite">The Louisville Cardinal, “Student Actors Take Stage for Last Weekend of Pipeline,” Feb. 2026. <a href="https://www.louisvillecardinal.com/2026/02/student-actors-take-stage-for-last-weekend-of-pipeline/" target="_blank" rel="noopener">Link</a></div>
+      </div>
+      <div class="press-group">
+        <h4>Reebok × Walker Wear Collaboration (Talent / Creative Assistant), 2025</h4>
+        <div class="cite">Reebok, “Reebok x Walker Wear Celebrate Unity and Empowerment with New Collection, Available Globally Spring 2025,” Reebok News, Mar. 2025. <a href="https://news.reebok.com/latest-news/reebok-x-walker-wear-celebrate-unity-and-empowerment-with-new-collection--available-globally-spring-/s/746b4dd2-5d8a-4d78-8160-81f90875497a" target="_blank" rel="noopener">Link</a></div>
+        <div class="cite">Essence, Mar. 2025. <a href="https://www.essence.com/fashion/april-walker-reebok-womens-history-month-capsule/" target="_blank" rel="noopener">Link</a></div>
+        <div class="cite">The Snobette, “Reebok Teams Up With Walker Wear For Women's History Month,” Mar. 2025. <a href="https://snobette.com/2025/03/reebok-walker-wear-capsule/" target="_blank" rel="noopener">Link</a></div>
+        <div class="cite">Design Scene, “Reebok x Walker Wear Collection Champions Unity and Empowerment,” Mar. 2025. <a href="https://www.designscene.net/2025/03/reebok-x-walker-wear.html" target="_blank" rel="noopener">Link</a></div>
+        <div class="cite">Jean E. Palmieri, “Streetwear Icon April Walker Reimagines Reebok's Freestyle Hi for Women's Empowerment Collection,” WWD / Footwear News, Mar. 5, 2025. <a href="https://wwd.com/footwear-news/sneaker-news/reebok-april-walker-collaboration-freestyle-hi-sneaker-1237708138/" target="_blank" rel="noopener">Link</a></div>
+      </div>
+      <div class="press-group">
+        <h4>This Little Light of Mine (Costume Designer) — Kentucky Opera, 2025</h4>
+        <div class="cite">Brenda Sparks, “Democracy and the Arts: What Americans Can Learn from Fannie Lou Hamer's Story,” The Courier-Journal, Feb. 20, 2025. <a href="https://www.courier-journal.com/story/opinion/contributors/2025/02/20/kentucky-opera-fannie-lou-hamer-this-little-light-of-mine-art-democracy-civil-rights/79069363007/" target="_blank" rel="noopener">Link</a></div>
+        <div class="cite">Opera America, “This Little Light of Mine,” Performance Listing. <a href="https://www.operaamerica.org/calendar/opera%20performance/22603/this-little-light-of-mine" target="_blank" rel="noopener">Link</a></div>
+        <div class="cite">WHAS11, “Learn the Story of Fannie Lou Hamer with ‘This Little Light of Mine’,” Great Day Live, Feb. 2025. <a href="https://www.whas11.com/article/features/great-day-live/learn-the-story-of-fannie-lou-hamer-with-this-little-light-of-mine/417-10d3aa5c-4c7f-4616-ab67-edbc8e162958" target="_blank" rel="noopener">Link</a></div>
+        <div class="cite">A.A. Cristi, “Kentucky Opera Will Host Louisville Premiere of This Little Light of Mine,” BroadwayWorld, Jan. 31, 2025. <a href="https://www.broadwayworld.com/louisville/article/Kentucky-Opera-Will-Host-Louisville-Premiere-of-THIS-LITTLE-LIGHT-OF-MINE-20250131" target="_blank" rel="noopener">Link</a></div>
+        <div class="cite">Kentucky Opera, “Kentucky Opera Announces Louisville Premiere of This Little Light of Mine Honoring Voting Rights Icon Fannie Lou Hamer,” Press Release, Jan. 2025. <a href="https://kyopera.org/wp-content/uploads/2025/01/KO-This-Little-LIght-Press-Release-1.pdf" target="_blank" rel="noopener">Link</a></div>
+      </div>
+      <div class="press-group">
+        <h4>The (Un)Known Project / Journeys to Freedom (Co-Designer) — IDEAS xLab, 2022</h4>
+        <div class="cite">Yasmine Jumaa, “In ‘Journeys to Freedom,’ Actors Depict Stories of Escape Across the Ohio River,” Louisville Public Media, Jun. 9, 2022. <a href="https://www.lpm.org/news/2022-06-09/in-journeys-to-freedom-actors-depict-stories-of-escape-across-the-ohio-river" target="_blank" rel="noopener">Link</a></div>
+        <div class="cite">WDRB News, “Belle of Louisville to Launch ‘Journeys to Freedom’ Cruises This Summer,” Jun. 2022. <a href="https://www.wdrb.com/news/belle-of-louisville-to-launch-journeys-to-freedom-cruises-this-summer/article_bbdde5ba-e0fb-11ec-8298-87c389b5859e.html" target="_blank" rel="noopener">Link</a></div>
+        <div class="cite">Queer Kentucky, “The Journeys to Freedom: (Un)Known Project River Cruise Will Make Its Debut on the Belle of Louisville,” Jun. 2, 2022. <a href="https://queerkentucky.com/the-journeys-to-freedom-unknown-project-river-cruise-will-make-its-debut-on-the-belle-of-louisville/" target="_blank" rel="noopener">Link</a></div>
+        <div class="cite">WAVE3 News, “Immersive Belle of Louisville Cruise to Depict Families Escaping Slavery,” Jun. 2022. <a href="https://www.wave3.com/2022/06/02/immersive-belle-louisville-cruise-depict-families-escaping-slavery/" target="_blank" rel="noopener">Link</a></div>
+        <div class="cite">WAVE3 News, “‘Journeys to Freedom’ Kicks Off Special Historical Event,” Jun. 20, 2023. <a href="https://www.wave3.com/video/2023/06/20/journeys-freedom-kicks-off-special-historical-event/" target="_blank" rel="noopener">Link</a></div>
+      </div>
+      <div class="press-group">
+        <h4>Hite Art &amp; Design Annual Student Exhibition (Fashion Artist), 2022</h4>
+        <div class="cite">The Louisville Cardinal, “Hite Art &amp; Design Annual Student Exhibition,” Dec. 2022. <a href="https://www.louisvillecardinal.com/2022/12/hite-art-design-annual-student-exhibition/" target="_blank" rel="noopener">Link</a></div>
+      </div>
+      <div class="press-group">
+        <h4>BET Awards Performance — Lil Nas X, “MONTERO” (Seamstress) — Michael Schmidt Studios, 2021</h4>
+        <div class="cite">BET, “BET Awards 2021: Lil Nas X Pays Homage to Michael Jackson With ‘MONTERO’ Performance,” Jun. 2021. <a href="https://www.bet.com/article/gj201r/bet-awards-2021-lil-nas-x-pays-homage-to-michael-jackson" target="_blank" rel="noopener">Link</a></div>
+        <div class="cite">Glenn Rowley, “Lil Nas X Walks Like an Egyptian, Makes Out With Backup Dancer at 2021 BET Awards,” Billboard, Jun. 27, 2021. <a href="https://www.billboard.com/music/awards/lil-nas-x-montero-2021-bet-awards-9593527/" target="_blank" rel="noopener">Link</a></div>
+        <div class="cite">E! News, “Lil Nas X Heats Up the 2021 BET Awards With Steamy Kiss During ‘Montero’ Performance,” E! Online, Jun. 27, 2021. <a href="https://www.eonline.com/news/1278256/lil-nas-x-heats-up-the-2021-bet-awards-with-steamy-kiss-during-montero-performance" target="_blank" rel="noopener">Link</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="page" id="page-contact">
+    <div class="contact">
+      <div class="label">Contact</div>
+      <h2><a href="mailto:aniy4hmonae@gmail.com">aniy4hmonae@gmail.com</a></h2>
+      <div class="label">Social Media</div>
+      <h2><a href="https://www.instagram.com/aniy4hmonae/" target="_blank" rel="noopener">@aniy4hmonae</a></h2>
+    </div>
+  </section>
+</main>
+
+<footer>© Aniyah Monae. All rights reserved.</footer>
+
+<!-- Lightbox -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+  <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous">‹</button>
+  <img id="lbImg" alt="">
+  <button class="lb-nav lb-next" id="lbNext" aria-label="Next">›</button>
+  <div class="lb-meta" id="lbMeta"></div>
+</div>
+
+<script>
+/* ============================================================
+   SITE DATA
+   Image URLs already extracted live below. Galleries that are
+   empty get filled automatically when you run populate.py.
+   Everything between the two markers is what the script rewrites.
+   ============================================================ */
+/* SITE_DATA_START */
+const ORIGIN = "https://www.aniyahmonae.com";
+const PORTRAIT = "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/b4974da5-bb32-4298-844d-885859fd542f/_MG_2286.jpeg";
+const SITE = {
+  "installation": {
+    "kind": "links",
+    "projects": [
+      {
+        "title": "Pipeline Installation",
+        "slug": "pipelineinstallation",
+        "cover": "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780098936144-OQKPXX77F2UCC21WYZJD/IMG_1650.jpg",
+        "images": [
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780098936144-OQKPXX77F2UCC21WYZJD/IMG_1650.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780098965879-LTSVEKVO14JVURETVJXC/IMG_1648.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780098990387-F8BZHUSCR5P3MJJE8AGV/IMG_1649%2B%25282%2529.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099014406-DA3VFU8QSZ3HWKVT32C2/IMG_1691.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099047618-P2U8BEQKAWWXAOLJO1QX/IMG_1684.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099066681-YFBB6NFX54A2VKKHZSPC/IMG_1701%2B%25281%2529.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780100209662-70HGBIQE573G3ZVADVAV/IMG_1663%25252B%252525281%25252529.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099111875-QBH1VFG17HGA03LDXEYJ/IMG_1670%2B%25281%2529.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099130198-X3GWOAYCGJQZSW6OXP7O/IMG_1669%2B%25281%2529.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780098864064-8LU14NBZL0NKI6U0LDB5/IMG_1761%2B%25281%2529.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099181984-X447ZOSCUR9DAFXXJPZ3/IMG_1722.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099200116-PTAXFY2XHAUTA72H6K5A/IMG_1727.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099219810-AX6YSPEUK5XYOHUBTG1K/IMG_1724.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099266399-GMEEB0FXVS0ARV6A9GEL/IMG_1793.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099296034-G511NY7ZL8YTCOC551DM/IMG_1807.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099310479-YYBS88KFDEHXHR9DZBHZ/IMG_1797.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099364434-WEC145FWVB8YLDV147C8/IMG_1837.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099337676-T9LH73RBJU8TQM03L3BL/IMG_1836.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099415144-4UZVYS9TJN8M3324AWLY/IMG_1853.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099476014-YBJO227OP77A77QW4JYM/IMG_1870.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099499682-5DRQNHGT58TZ1UJK7AI6/IMG_1875.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099518008-OFYGMTVKZSCSMVTXKUND/IMG_1889.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099542409-MEUUKG53WEU4S5EQC8J1/IMG_1942.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099558355-LXWYOY6U7RQIW4NIHUWD/IMG_1935.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099578999-0MHPAIP39K71WDN5O8LQ/IMG_1937.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099613806-B7AGCX8CS4EYB4WKM9W8/IMG_1900.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099629328-DC191H3WTWSV03WRR4PO/IMG_1915.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099649574-R0K5GUQHEHX54X4HIZY9/IMG_1909.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099722207-WNFGEH2EXFC2NJ21JDE6/IMG_1956.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099758763-8H46V5H0AR530O6JESKJ/IMG_1955.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099772964-FR164MLU5BCWKE2UVVEC/IMG_1960.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099815672-PUZADHG3BTMNN7ERFSYE/IMG_1992.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099830805-640NTI1IZW9ODW3DKM99/IMG_1989.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099857392-C7VZRVWN7ILH9XVLTWKC/IMG_2019.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099892892-VOKG4W7QJF8S4IWMRD7O/IMG_2022.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780099929351-MTY9RGZ5NEL2DS7P6U6R/IMG_2052.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780100031932-1YN06DRTB3XLK6OM40QN/IMG_2044.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780100054142-TUVKWLNOZBICJRBSUJ7B/IMG_2037.jpg"
+        ]
+      },
+      {
+        "title": "Walker Wear Installation",
+        "slug": "walkerwearinstallation",
+        "cover": "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780100081056-LF9L5IFQIU0PQK1AFI20/miscellaneous20%2B%25281%2529.jpg",
+        "images": [
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780100081056-LF9L5IFQIU0PQK1AFI20/miscellaneous20%2B%25281%2529.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780100151199-O2I4S3EOKUVS4QQVTGVK/9JULYFINAL31.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/532f5bb8-d267-498f-b051-558451965d05/9JULYFINAL47+%282%29+%281%29.JPEG",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/ad0029a0-8e51-43d6-a4f9-0331f53d8509/9JULYFINAL24.JPEG",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780100122091-JKAHSVL9BXDC2XHUQOSE/9JULYFINAL01%2B%25281%2529.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/b988e9d6-41ab-45dc-9f66-9b1d29ad97c1/9JULYFINAL15+%283%29.JPEG",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/9983984d-e6a2-4d28-97ae-0452997c44dd/9JULYFINAL34.JPEG",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/878fac40-0f8c-4413-a974-799a52f2f779/9JULYFINAL38.JPEG",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/c8838292-b250-4aba-8395-dd2ca4164a3c/9JULYFINAL33.JPEG",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/53d0afaa-1979-4754-9d2c-7bb906805e5f/miscellaneous89.JPEG",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/52b0476f-78de-4f8b-abec-4c8d21505a91/9JULYFINAL27.JPEG"
+        ]
+      },
+      {
+        "title": "Aniyah Monae Installation",
+        "slug": "aniyahmonaeinstallation",
+        "cover": "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780100457521-BO7SL2ZI535B7Z2HLLFA/Aniyah_Shoot_1-207.jpg",
+        "images": [
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780100457521-BO7SL2ZI535B7Z2HLLFA/Aniyah_Shoot_1-207.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780100326962-R0VN3QU02B2KQVAF8QMF/Aniyah_Shoot_1-090.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780100356554-CDGU3LTTLNPKFT6IDTZ2/Aniyah_Shoot_1-026.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780100386975-MW5HGTR3Z6AAUW5CO1IK/Aniyah_Shoot_1-097.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780100421488-7XQAWCKI2HLRIXED0YAM/Aniyah_Shoot_1-200.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780281172341-4B97EW6KPG7S0UQCCGRY/Aniyah_Shoot_1-393.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780281665041-ZLDZ5GMB61C698T0U0X3/Aniyah_Shoot_1-398%2B2.jpg"
+        ]
+      }
+    ]
+  },
+  "conceptual": {
+    "kind": "links",
+    "projects": [
+      {
+        "title": "Nina Simone",
+        "slug": "ninasimone",
+        "cover": "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/78aa32c6-ca76-48dd-b1c6-e6d0a02f4206/IMG_3786.JPG",
+        "images": [
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/78aa32c6-ca76-48dd-b1c6-e6d0a02f4206/IMG_3786.JPG",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/191fa510-c5eb-4ffd-82f4-6bd39a4f91f8/IMG_4546.JPG",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/c5862aa7-99d8-4a38-90d2-7a44d923db75/IMG_4554.JPG",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/5d8b18c2-e94b-43d6-9f5e-b9ffd1aace55/IMG_4547.JPG",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/73791708-563b-4455-8dbb-85a0fde2cabf/IMG_4555.JPG"
+        ]
+      },
+      {
+        "title": "Red",
+        "slug": "red",
+        "cover": "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/f5c2664e-66cd-4477-8f07-d1938b5e9d67/Facetune_02-10-2024-22-02-30.jpeg",
+        "images": [
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/f5c2664e-66cd-4477-8f07-d1938b5e9d67/Facetune_02-10-2024-22-02-30.jpeg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/da9ea2df-c1af-4e96-9176-80ac6651292e/EB2C7CFD-45B6-4AAD-83AD-593CDB55C7D0_L0_001-3_28_2025%2C+9_13_53+PM.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/eb7227e2-b0b8-422f-8f7c-5b2d78e1cec3/Aniyah+Monae+-+5.png",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/e792f3a8-6a77-4d3b-8198-81d10d3a5d15/Edited+9.3-18.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/b6101b58-4c35-45f1-acd2-35a691041c86/77F85005-A88E-4BAA-BAED-BA1C80D84983_L0_001-3_28_2025%2C+9_13_53+PM.jpg"
+        ]
+      }
+    ]
+  },
+  "costume": {
+    "kind": "links",
+    "projects": [
+      {
+        "title": "Journeys to Freedom",
+        "slug": "journeystofreedom",
+        "cover": "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780103435036-V1SBE0BA2JI1YLNME5BB/IMG_3756.jpg",
+        "images": [
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780103435036-V1SBE0BA2JI1YLNME5BB/IMG_3756.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/70021545-db9d-41f0-b89c-c90e7f7c8590/IMG_0367+2.JPG",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/51ce7588-bd9b-4a3e-9cfe-4fdfcffc54c6/IMG_3755.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/ef5df156-2e86-44ba-8916-c68a36f05622/IMG_9844.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/ced0b18b-3258-4798-8b97-171c3b3ff931/IMG_3753.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/163a830c-f6ee-4541-9862-80d34cee1567/221A3194.jpeg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/66886e46-ce8d-40fb-b11b-2536f6b2b26c/IMG_9847.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/20c087c5-3964-44f5-8149-e36779d4ffbe/IMG_9811.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/dec22ed5-9029-43be-b164-cc1309fb632c/IMG_9828.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/81595f21-d552-4638-98e4-eade11b93f02/IMG_9824.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/e648a48b-5b7d-4ba0-a5ee-a0af70739140/image.png",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/043bd7bf-e5be-4be6-bd15-f21bc4a835b4/IMG_9826.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/683f1380-2680-43d3-8b27-bf361c12d819/IMG_3754.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/fea4cf77-203a-4a8c-a214-eb530a19a9ec/bj1%2BLoVySXiqamdR6Gku4Q.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/42011922-211d-46a2-a074-f9f371429fcc/IMG_3663.JPG"
+        ]
+      },
+      {
+        "title": "Pipeline Costume Design",
+        "slug": "pipelinecostume",
+        "cover": "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/cf2fc213-5d2c-45fe-89ea-4e234fc1f4b5/IMG_5817.jpg",
+        "images": [
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/cf2fc213-5d2c-45fe-89ea-4e234fc1f4b5/IMG_5817.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/09c2c16c-b526-444c-8144-ca659489fba8/IMG_5717.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/0db80934-0f59-4165-8a66-4485f386c3ef/IMG_5772.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/d09949b8-4264-419d-8d08-6000358a53bc/IMG_5725.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/e9ceeb01-8b54-4683-9cfa-685c769f97f7/IMG_5697.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/020fe6ca-e8db-4a52-9a2b-505ca3d14d14/IMG_5662.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/262c08c5-5394-49bd-98d2-bde9f3036121/IMG_5687.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/0afc60de-48e4-409c-9b2d-058648faf131/IMG_5715.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/461faadd-59b8-4567-9d13-7ec06ef1b06e/IMG_5653.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/f741f741-b362-41cd-844a-14c0ae084440/IMG_5669+%281%29.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/f04f94da-78bd-437a-9d85-fc8551974308/IMG_5826.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/14713a45-9519-46f5-9cde-204a408abb29/IMG_5845.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/89eea649-fdff-4c90-924f-dcf0b61f3e36/IMG_5762.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/084f6d28-9022-45aa-8789-677567bbcd4c/IMG_5664.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/dbb5eeea-28d0-4b8b-9e5d-9355e9634c5e/IMG_5822.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/7bd235a3-a707-4190-bdab-d674e5c816f9/IMG_5767.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/bda29695-6e54-4426-8e54-9d3cc5587014/IMG_5854.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/836949a6-ffdc-4551-bee7-365744207eb6/IMG_5778.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/15f63f3e-180d-47a6-8810-f586a59880c0/IMG_5811.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/038a763d-670b-422e-a09c-d250cdab79a4/IMG_5787.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/bba6013b-7412-484d-8524-7558ea0f6e3b/IMG_5861.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/d0246305-5239-44b4-9ba0-340eb0cabff0/IMG_5809.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/8e8fa97e-4d7d-4ea8-b084-0ac05d86ab62/IMG_5652.jpg"
+        ]
+      },
+      {
+        "title": "This Little Light of Mine",
+        "slug": "this-little-light-of-mine",
+        "cover": "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/c8e334e7-3038-4609-8359-f9bf462e18d3/TLLM01.jpeg",
+        "images": [
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/c8e334e7-3038-4609-8359-f9bf462e18d3/TLLM01.jpeg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/38ffc7fb-6466-451a-bf8d-15821543a9e1/TLLM13.jpeg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/21230c43-fa81-4aad-bf5f-cb9a211c1181/TLLM12.jpeg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/f4b39502-c1f4-4209-a6f5-137d10d1e243/TLLM04.jpeg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/6328d430-5889-4fa5-9cd9-a7002b85cef6/TLLM07.jpeg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/60398299-580d-4929-8f2d-7d3d5c4a2f2d/TLLM09.jpeg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/8d58b205-bd26-4cc6-afec-3a7c84c2ee5c/TLLM03.jpeg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/06b8710a-f5a4-4d65-891d-8d121f2d28ec/TLLM08.jpeg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/e262d28a-c570-4408-bf45-9434459dd74c/TLLM02.jpeg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/b554f262-572e-41ca-b504-41b642d84207/SO-8737.JPEG",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/5b9a23ba-ae1c-4554-ae1b-9cf17a77b1c6/SO-8783.JPG",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/54b88dce-727f-405d-b672-8d3217931774/SO-8799.JPG",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/d8a58f12-3e03-43cb-ad4c-ba1271b8568b/SO-7916-2.JPG",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/3cd81fa1-8113-4491-bd88-dede25691b99/SO-7955-2.JPEG",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/b078c512-3e21-4c93-870c-6fefd880ff4d/SO-7956-2.JPG"
+        ]
+      }
+    ]
+  },
+  "illustration": {
+    "kind": "links",
+    "projects": [
+      {
+        "title": "Conceptual Illustration",
+        "slug": "conceptual-illustration",
+        "cover": "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780269699247-T7EHNAPE42PE2HBTTIPW/Copy%2Bof%2BPortfolio.pptx.zip%2B-%2B10.png",
+        "images": [
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780269699247-T7EHNAPE42PE2HBTTIPW/Copy%2Bof%2BPortfolio.pptx.zip%2B-%2B10.png",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780095565207-4DN0O8LR9IIWJC58P734/Copy%2Bof%2BPortfolio.pptx.zip%2B-%2B11.png",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780095535323-HOC43YUMLUM1OE5XIS5O/Copy%2Bof%2BPortfolio.pptx.zip%2B-%2B12.png",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780095518135-0BV4EIFKLGFHTP5TDHLQ/Copy%2Bof%2BPortfolio.pptx.zip%2B-%2B13.png",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/145c6a53-ef88-4c5c-a2b3-7363d46ca54a/Untitled_Artwork+2.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780269565067-CQ0X1GBWIBT5T0SPZOJY/20250324160928_00001.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/7e74d390-7c7e-4d84-8266-952426010553/Untitled_Artwork+1.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/31c01e3c-6ede-43a2-a656-7a5e31e565a2/IMG_2567.JPG"
+        ]
+      },
+      {
+        "title": "Costume Illustration",
+        "slug": "costumeillustration",
+        "cover": "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/77b35564-4ba2-4f17-87fa-b70339b76a54/Untitled+Artwork.jpg",
+        "images": [
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/77b35564-4ba2-4f17-87fa-b70339b76a54/Untitled+Artwork.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780100913093-S6UUE1223GIWR2KJEQM5/20250324161121_00001.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780100884120-JJ76MXL1DBK228AT4LJL/20250324161023_00001.jpg"
+        ]
+      },
+      {
+        "title": "Fashion Illustration",
+        "slug": "fashion-illustration",
+        "cover": "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/423f5ab9-6668-4ad7-85db-ee1c9e33c520/Untitled_Artwork.jpg",
+        "images": [
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/423f5ab9-6668-4ad7-85db-ee1c9e33c520/Untitled_Artwork.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/02974306-a997-4838-922b-d9938774a251/IMG_2662+%281%29.JPG",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/658f5a32-4b05-45e0-b3d0-3fa0817e8a0e/IMG_2749.JPG"
+        ]
+      },
+      {
+        "title": "Introspective Illustration",
+        "slug": "introspection-illustration",
+        "cover": "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/e8c993d9-8c83-4563-b101-3f6844a9b0ca/Untitled_Artwork+%282%29.jpg",
+        "images": [
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/e8c993d9-8c83-4563-b101-3f6844a9b0ca/Untitled_Artwork+%282%29.jpg"
+        ]
+      }
+    ]
+  },
+  "fashion": {
+    "kind": "links",
+    "projects": [
+      {
+        "title": "Reebok x Walker Wear",
+        "slug": "reebokwalkerwear",
+        "cover": "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/5bb82941-ee35-473a-9e67-b4d2556bb6b3/250213_RBK_WalkerWear_shot_02_01.png",
+        "images": [
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/5bb82941-ee35-473a-9e67-b4d2556bb6b3/250213_RBK_WalkerWear_shot_02_01.png",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/025be6a9-1841-4fa4-bccd-64f866f2ba16/250213_RBK_WalkerWear_shot_02_05.jpeg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/ac5dc15f-ec25-4ed7-95cf-4da997596c53/250213_RBK_WalkerWear_shot_02_03.jpeg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/b133cdbd-9422-4d15-8723-7613150586a2/691095.jpg",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/e93d9497-f7b8-46d8-9616-176644760082/4c636996-dbf2-3b39-99d1-79f57a459a82.webp"
+        ]
+      },
+      {
+        "title": "Lil Nas X BET Awards 2021",
+        "slug": "lilnasxbet",
+        "cover": "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/c185042e-e24c-453d-a906-827de0ce04b7/1325825342.webp",
+        "images": [
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/c185042e-e24c-453d-a906-827de0ce04b7/1325825342.webp",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/9e429e81-a483-4981-af07-55b130fba310/Lil-Nas-X-show-bet-awards-2021-billboard-1548-1624847312.webp",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/ae2fc753-a202-4744-8e2a-22e57b2fc7b2/4ESKHV3CFNGVVCXFLQPUMI3D2A.webp",
+          "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/d85d2905-3d56-4024-be4a-70dda53f903b/lnxbet.webp"
+        ]
+      }
+    ]
+  },
+  "exhibition": {
+    "kind": "wall",
+    "images": [
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/065b49f7-07cb-4aa1-bd7a-d3bb3578b9c4/cressman_show-13.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/5a13043c-f51a-4ef9-974b-fc29a5c56f0b/cressman_show-10.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/11487f13-8696-4d03-bdc5-616fe4abac0b/7739EF8D-AAA4-4E63-8E00-CCB45A3778D1_L0_001-3_28_2025%2C+8_56_21+PM.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/d410ff97-33b1-4572-82a8-1f796e6ab95d/cressman_show-11.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/19aa52e3-dbe6-4cb6-8497-fb27a0c1dab2/cressman_show-12.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/7ed72723-b68d-4edc-acb5-d0e4807be895/IMG_2243+2.JPG",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/dc6d7d8b-bf94-477e-967b-fbe84cbf8ce6/IMG_2660+2+%281%29.JPG",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/0726662a-eeed-4599-b52b-6ac0435be344/IMG_2658+%281%29.JPG",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/2cbda85f-94a8-49e6-a71c-e1cc516e7ba7/IMG_2239.JPG",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/661f1c98-7e78-4585-bb76-0429cbf6286e/IMG_2662+2.JPG",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/b5df5f92-5f8d-4f2c-9bd4-c99cd63ecbd5/IMG_2253+2.JPG",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/a39109d7-8539-4d8d-943d-cfadff2bfbb3/IMG_2254+2.JPG",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/a2b24175-4e94-4ba9-9e9e-41cf32cabc6e/IMG_2659.JPG"
+    ],
+    "heading": "American Dream Exhibition"
+  },
+  "tailoring": {
+    "kind": "wall",
+    "images": [
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780094769026-2QSMYYJJ6UCQ55LD7705/IMG_8066%252B%2525281%252529.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780094716401-428E3VQA0UH5TGDBNVXY/IMG_0881.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/ce6ec085-9463-4fbf-ba02-74faed26e0d4/IMG_0888.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/06d2cfdb-fc3c-43a5-a998-f4915fb7917d/IMG_0887+%281%29.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780095101046-YKR07LU4QN63NTVOLG3R/IMG_0894.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/abef8e27-259a-44a9-ac62-8222463497b9/IMG_1055.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780093815244-U18SG106OMPOHAJ3KPTA/IMG_1068%2B%25283%2529.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780093855398-C5VD8PF1C5WH82JLP793/IMG_1063.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780094806070-Z83BWCYI049YPP9DHV4B/IMG_3681.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780094830165-K41IAZ34KHGMEZNTN17E/IMG_3684.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780094883735-H6003MHIZ6OULYRAM97R/IMG_3683.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780094168899-PVO04F59NXF21EW5T82H/IMG_3689.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780094226568-KMO9CQOI5EN9MXZSHOTD/IMG_3691.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780094281791-QT1A3J2MJCJVC1JYTH16/IMG_6164%2B%25281%2529.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780094323483-KJ3ZKMMNR9AGQVS81AT4/IMG_6159.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780094351927-DLCGA2B8VBAH51LZQNGR/IMG_7442.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780094427391-XO9L08EKDO5GZWF22E0G/IMG_7463.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780094383286-BCIEVVNG76EKY0J668UF/IMG_7446.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780094466346-FNIGZ3Q0US8X11FQDWS8/IMG_7418.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/435520bd-586e-40d0-96f0-c055a7d9593f/IMG_7472.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780094506651-Z45HK2T2OI5DGR6XYBF9/IMG_7506.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/05da2f08-2d37-4345-bf7b-1a702abe428b/IMG_7459.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780094537931-IEOARBPEAQHGAET2JZLD/IMG_7635.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/228e4cf8-59c8-49d2-822b-19d41d2f956e/IMG_7630.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780094566918-AU8O7D8LV57KJOLHFYZS/IMG_7616.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780094589544-R9VYLDFSW8WK0I7QAZV2/IMG_7610.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780094618377-IK1QQAP8MW1UT33NY5L7/IMG_7623.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/370dadec-e4d6-4006-884e-9b9391ff7f71/IMG_7616.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1780094658640-WWH00C4138ZNYZ6CDTPK/IMG_7625.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/da3819df-8753-4cf6-9ec2-8b0f55e9a397/IMG_7630.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/a61ec333-f61b-4ae9-b0fc-e34d7a0e6e60/IMG_1272.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/1a6d95b6-ee1f-4c86-9f03-34b2a89eaf2b/IMG_1253.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/393b9455-ddbb-4573-a046-02017390b170/IMG_1280.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/96782d33-0dc5-4616-893e-89b3bae7636e/IMG_2420.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/f6a31d36-5dea-450f-bd0d-9ff19a85b4d1/IMG_2425.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/44cdcbfb-3ae9-45f5-befc-eaebd449f9f8/IMG_1079+%281%29.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/705f6ea8-0f36-4f2b-ac97-6e4a4178fa98/IMG_1076.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/29132044-2824-47b2-a91b-6706fedfcbab/IMG_1080.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/33c3470b-d372-48e9-b5b3-4e22b6d62b83/IMG_1087.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/3ed3c005-9862-4c13-a465-62bea1ef5692/IMG_0220+%281%29.jpg",
+      "https://images.squarespace-cdn.com/content/v1/6a14f154b22bc70393b1425b/9ee1c775-5fde-4245-8ad3-69bbb658fe96/IMG_0218.jpg"
+    ]
+  }
+};
+/* SITE_DATA_END */
+
+const ORDER = ["installation","conceptual","exhibition","costume","illustration","tailoring","fashion"];
+const initials = {installation:"In",conceptual:"Co",exhibition:"Ex",costume:"Cs",illustration:"Il",tailoring:"Ta",fashion:"Fa"};
+
+function coverOf(key){
+  const g = SITE[key];
+  if(!g) return "";
+  if(g.kind==="wall") return g.images[0] || "";
+  for(const p of g.projects){ if(p.cover) return p.cover; if(p.images && p.images[0]) return p.images[0]; }
+  return "";
+}
+function ph(label){ return '<div class="placeholder">'+label+'</div>'; }
+
+/* ---- Home ---- */
+function renderHome(){
+  const grid = document.getElementById('home-grid');
+  grid.innerHTML = ORDER.map(key=>{
+    const cov = coverOf(key);
+    const label = key.charAt(0).toUpperCase()+key.slice(1);
+    const inner = cov ? '<img src="'+cov+'" alt="'+label+'" loading="lazy">' : ph(initials[key]);
+    return '<div class="tile" onclick="go(\''+key+'\')"><figure><div class="frame">'+inner+'</div><figcaption class="caption">'+label+'</figcaption></figure></div>';
+  }).join('');
+}
+
+/* ---- Link galleries (cover tiles -> lightbox) ---- */
+function renderLinks(key){
+  const g = SITE[key];
+  const host = document.getElementById('gallery-'+key);
+  host.innerHTML = '<div class="grid">'+ g.projects.map((p,i)=>{
+    const cov = p.cover || (p.images&&p.images[0]) || "";
+    const inner = cov ? '<img src="'+cov+'" alt="'+p.title+'" loading="lazy">' : ph(p.title.charAt(0));
+    const n = (p.images&&p.images.length) ? '<span class="count">'+p.images.length+' images</span>' : '';
+    return '<div class="tile" onclick="openProject(\''+key+'\','+i+')"><figure><div class="frame">'+inner+'</div><figcaption class="caption">'+p.title+n+'</figcaption></figure></div>';
+  }).join('') + '</div>';
+}
+
+/* ---- Wall galleries ---- */
+function renderWall(key){
+  const g = SITE[key];
+  const host = document.getElementById('gallery-'+key);
+  let html = '';
+  if(g.heading) html += '<h2 class="section-head">'+g.heading+'</h2>';
+  if(!g.images.length){
+    html += '<p class="empty-note">Run populate.py to load this gallery\u2019s images from the live site.</p>';
+    host.innerHTML = html; return;
+  }
+  html += '<div class="wall">'+ g.images.map((src,i)=>'<figure onclick="openWall(\''+key+'\','+i+')"><img src="'+src+'" alt="'+key+' '+(i+1)+'" loading="lazy"></figure>').join('') +'</div>';
+  host.innerHTML = html;
+}
+
+function renderGallery(key){
+  const host=document.getElementById('gallery-'+key);
+  if(!SITE[key]){ if(host) host.innerHTML=''; return; }
+  if(SITE[key].kind==="wall") renderWall(key); else renderLinks(key);
+}
+
+/* ---- Lightbox ---- */
+let lbSet=[], lbIdx=0;
+function showLb(){
+  const img=document.getElementById('lbImg');
+  img.src=lbSet[lbIdx];
+  document.getElementById('lbMeta').textContent=(lbIdx+1)+' / '+lbSet.length;
+}
+function openLb(images,start){
+  if(!images||!images.length) return false;
+  lbSet=images; lbIdx=start||0;
+  document.getElementById('lb').classList.add('open');
+  document.body.style.overflow='hidden';
+  showLb(); return true;
+}
+function openProject(key,i){
+  const p=SITE[key].projects[i];
+  if(p.images && p.images.length){ openLb(p.images,0); }
+  else { window.open(ORIGIN+'/'+p.slug,'_blank','noopener'); }
+}
+function openWall(key,i){ openLb(SITE[key].images,i); }
+function closeLb(){ document.getElementById('lb').classList.remove('open'); document.body.style.overflow=''; }
+function step(d){ lbIdx=(lbIdx+d+lbSet.length)%lbSet.length; showLb(); }
+document.getElementById('lbClose').onclick=closeLb;
+document.getElementById('lbPrev').onclick=()=>step(-1);
+document.getElementById('lbNext').onclick=()=>step(1);
+document.getElementById('lb').addEventListener('click',e=>{ if(e.target.id==='lb') closeLb(); });
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('lb').classList.contains('open')) return;
+  if(e.key==='Escape') closeLb();
+  if(e.key==='ArrowLeft') step(-1);
+  if(e.key==='ArrowRight') step(1);
+});
+
+/* ---- Navigation ---- */
+function go(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const t=document.getElementById('page-'+id); if(t) t.classList.add('active');
+  document.querySelectorAll('nav.primary [data-page]').forEach(b=>b.classList.remove('active'));
+  const key = ORDER.indexOf(id)>-1 ? 'artwork' : id;
+  const btn=document.querySelector('nav.primary [data-page="'+key+'"]'); if(btn) btn.classList.add('active');
+  document.getElementById('artworkFolder').classList.remove('open');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleFolder(e){ e.stopPropagation(); document.getElementById('artworkFolder').classList.toggle('open'); }
+document.addEventListener('click',()=>document.getElementById('artworkFolder').classList.remove('open'));
+
+/* ---- Init ---- */
+document.getElementById('bio-portrait-img').src=PORTRAIT;
+renderHome();
+ORDER.forEach(renderGallery);
+</script>
+</body>
+</html>
