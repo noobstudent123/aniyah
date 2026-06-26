@@ -6,119 +6,188 @@
 <title>Aniyah Monae</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet" />
 <style>
   :root{
-    --bg:#ffffff; --ink:#1a1a1a; --muted:#6f6f6f; --line:#e9e9e9;
-    --sans:'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --serif:'Cormorant Garamond', Georgia, serif;
-    --maxw:1180px; --gut:clamp(20px,5vw,64px);
+    --bg:#fbfaf7; --ink:#181715; --muted:#7c776e; --faint:#b6b1a6; --line:#e7e3da;
+    --paper:#f1eee6; --accent:#1a1714;
+    --display:'Cormorant Garamond', Georgia, serif;
+    --ui:'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --maxw:1240px; --gut:clamp(20px,5vw,72px);
+    --ease:cubic-bezier(.2,.7,.2,1);
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;line-height:1.65;-webkit-font-smoothing:antialiased;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--display);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;}
   a{color:inherit;text-decoration:none;}
   img{display:block;width:100%;height:auto;}
+  ::selection{background:#e9e2d2;}
 
-  /* Header */
-  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--line);}
-  .masthead{max-width:var(--maxw);margin:0 auto;padding:26px var(--gut) 18px;display:flex;flex-direction:column;align-items:center;gap:16px;}
-  .brand{font-weight:300;letter-spacing:.42em;font-size:clamp(18px,2.4vw,26px);text-transform:uppercase;padding-left:.42em;cursor:pointer;}
-  nav.primary{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:clamp(14px,2.4vw,30px);font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;}
-  nav.primary button{background:none;border:none;cursor:pointer;font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--muted);padding:4px 0;position:relative;transition:color .25s ease;}
+  .ui{font-family:var(--ui);}
+  .eyebrow{font-family:var(--ui);font-weight:400;text-transform:uppercase;letter-spacing:.34em;font-size:11px;color:var(--muted);}
+
+  /* ---------- Header ---------- */
+  header{position:fixed;top:0;left:0;right:0;z-index:60;transition:background .4s ease,border-color .4s ease,padding .4s ease;border-bottom:1px solid transparent;}
+  header.solid{background:rgba(251,250,247,.86);backdrop-filter:saturate(140%) blur(10px);border-bottom-color:var(--line);}
+  .masthead{max-width:var(--maxw);margin:0 auto;padding:20px var(--gut);display:flex;align-items:center;justify-content:space-between;gap:20px;}
+  .brand{font-family:var(--display);font-weight:500;font-size:clamp(20px,2.2vw,27px);letter-spacing:.04em;cursor:pointer;line-height:1;white-space:nowrap;}
+  .brand span{font-style:italic;}
+  nav.primary{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:clamp(14px,2vw,28px);}
+  nav.primary button{background:none;border:none;cursor:pointer;font-family:var(--ui);font-weight:400;letter-spacing:.2em;text-transform:uppercase;font-size:11.5px;color:var(--muted);padding:6px 0;position:relative;transition:color .25s ease;}
   nav.primary button:hover,nav.primary .active{color:var(--ink);}
-  nav.primary .active::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:1px;background:var(--ink);}
+  nav.primary .active::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--ink);}
   .folder{position:relative;}
-  .folder-menu{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%) translateY(6px);background:#fff;border:1px solid var(--line);padding:10px 0;min-width:184px;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .2s ease,transform .2s ease;box-shadow:0 18px 40px -24px rgba(0,0,0,.4);}
-  .folder:hover .folder-menu,.folder.open .folder-menu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);}
-  .folder-menu button{text-align:center;padding:8px 22px !important;color:var(--muted);width:100%;}
-  .folder-menu button:hover{color:var(--ink);}
-  .caret{display:inline-block;margin-left:6px;font-size:9px;transform:translateY(-1px);}
+  .folder-menu{position:absolute;top:calc(100% + 12px);right:0;background:var(--bg);border:1px solid var(--line);padding:8px 0;min-width:190px;display:flex;flex-direction:column;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .22s ease,transform .22s ease;box-shadow:0 24px 50px -30px rgba(0,0,0,.45);}
+  .folder:hover .folder-menu,.folder.open .folder-menu{opacity:1;visibility:visible;transform:translateY(0);}
+  .folder-menu button{text-align:left;padding:9px 24px !important;letter-spacing:.16em;width:100%;color:var(--muted);}
+  .folder-menu button:hover{color:var(--ink);background:rgba(0,0,0,.02);}
+  .caret{display:inline-block;margin-left:7px;font-size:8px;transform:translateY(-1px);}
 
-  /* Page shell */
-  main{max-width:var(--maxw);margin:0 auto;padding:clamp(40px,7vw,86px) var(--gut) 40px;min-height:60vh;}
-  .page{display:none;animation:fade .5s ease;}
+  /* ---------- Pages ---------- */
+  main{min-height:70vh;}
+  .page{display:none;}
   .page.active{display:block;}
-  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
-  .page-title{font-weight:300;text-transform:uppercase;letter-spacing:.32em;font-size:13px;color:var(--muted);text-align:center;margin:0 0 clamp(30px,5vw,54px);}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--gut);}
+  .page-head{max-width:var(--maxw);margin:0 auto;padding:clamp(110px,15vh,170px) var(--gut) clamp(34px,6vw,60px);text-align:center;}
+  .page-head .eyebrow{display:block;margin-bottom:16px;}
+  .page-head h1{font-family:var(--display);font-weight:300;font-size:clamp(40px,7vw,82px);line-height:1.02;margin:0;letter-spacing:-.01em;}
+  .page-head h1 em{font-style:italic;}
+  .back{display:inline-block;margin:0 0 30px;font-family:var(--ui);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);background:none;border:none;cursor:pointer;}
+  .back:hover{color:var(--ink);}
 
-  /* Galleries */
-  .grid{display:grid;gap:clamp(18px,3vw,38px);grid-template-columns:repeat(auto-fill,minmax(260px,1fr));}
+  /* ---------- HOME hero ---------- */
+  .hero{position:relative;height:100vh;min-height:620px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 var(--gut);overflow:hidden;}
+  .hero h1{font-family:var(--display);font-weight:300;font-size:clamp(52px,13vw,180px);line-height:.92;margin:0;letter-spacing:-.015em;will-change:transform;}
+  .hero h1 .it{font-style:italic;font-weight:300;}
+  .hero .tag{font-family:var(--ui);text-transform:uppercase;letter-spacing:.32em;font-size:clamp(10px,1.3vw,13px);color:var(--muted);margin-top:clamp(20px,3vw,34px);}
+  .hero .tag b{font-weight:400;color:var(--ink);}
+  .scrollcue{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);font-family:var(--ui);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--faint);display:flex;flex-direction:column;align-items:center;gap:10px;}
+  .scrollcue .ln{width:1px;height:42px;background:linear-gradient(var(--faint),transparent);animation:cue 2.2s var(--ease) infinite;}
+  @keyframes cue{0%{transform:scaleY(0);transform-origin:top;}40%{transform:scaleY(1);transform-origin:top;}60%{transform:scaleY(1);transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
+
+  /* ---------- Lookbook (horizontal scroll-snap) ---------- */
+  .lookbook-head{display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:clamp(50px,8vw,90px) var(--gut) 22px;max-width:var(--maxw);margin:0 auto;}
+  .lookbook-head h2{font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(24px,3.4vw,40px);margin:0;}
+  .lookbook-head .hint{font-family:var(--ui);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);white-space:nowrap;}
+  .lookbook{display:flex;gap:clamp(14px,2vw,26px);overflow-x:auto;scroll-snap-type:x mandatory;padding:6px var(--gut) clamp(30px,5vw,54px);scrollbar-width:none;cursor:grab;}
+  .lookbook::-webkit-scrollbar{display:none;}
+  .lookbook.drag{cursor:grabbing;}
+  .lb-card{scroll-snap-align:center;flex:0 0 clamp(240px,32vw,380px);}
+  .lb-card .frame{position:relative;aspect-ratio:3/4;overflow:hidden;background:var(--paper);}
+  .lb-card .frame img{width:100%;height:100%;object-fit:cover;transition:transform 1s var(--ease);}
+  .lb-card:hover .frame img{transform:scale(1.05);}
+  .lb-card .cap{font-family:var(--display);font-style:italic;font-size:21px;margin-top:14px;text-align:center;}
+  .lb-card .n{font-family:var(--ui);font-style:normal;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);display:block;margin-top:4px;}
+
+  /* ---------- Editorial index (home) ---------- */
+  .index{padding:clamp(30px,6vw,70px) 0 clamp(50px,9vw,110px);}
+  .ed{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:clamp(24px,5vw,80px);max-width:var(--maxw);margin:0 auto clamp(70px,11vw,150px);padding:0 var(--gut);}
+  .ed:nth-child(even) .ed-media{order:2;}
+  .ed-num{font-family:var(--ui);font-size:11px;letter-spacing:.24em;color:var(--faint);margin-bottom:14px;}
+  .ed-title{font-family:var(--display);font-weight:300;font-size:clamp(34px,5vw,64px);line-height:1.02;margin:0 0 18px;letter-spacing:-.01em;}
+  .ed-title em{font-style:italic;}
+  .ed-desc{font-family:var(--display);font-size:clamp(16px,1.5vw,19px);color:#4f4a43;max-width:42ch;margin:0 0 26px;}
+  .ed-link{font-family:var(--ui);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink);background:none;border:none;cursor:pointer;padding:0;position:relative;}
+  .ed-link::after{content:"";position:absolute;left:0;bottom:-6px;width:100%;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease);}
+  .ed:hover .ed-link::after,.ed-link:hover::after{transform:scaleX(1);}
+  @media(max-width:760px){.ed{grid-template-columns:1fr;gap:24px;}.ed:nth-child(even) .ed-media{order:0;}.ed-media{order:0;}}
+
+  /* ---------- Atelier reveal (the "being created" effect) ---------- */
+  .art{position:relative;overflow:hidden;background:var(--paper);}
+  .art .art-inner{position:relative;overflow:hidden;width:100%;height:100%;}
+  .art img{transition:transform 1.3s var(--ease),filter 1.3s var(--ease);transform:scale(1.14);filter:saturate(.5) contrast(.95) brightness(1.02);}
+  .art .cover{position:absolute;inset:0;z-index:2;transform-origin:top;background-color:var(--paper);
+    background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:26px 26px;transition:transform 1.15s var(--ease);}
+  .art .seam{position:absolute;left:0;right:0;top:100%;z-index:3;height:0;border-top:1.5px solid var(--accent);opacity:0;transition:top 1.1s var(--ease),opacity .5s ease 1s;}
+  .art .seam::after{content:"";position:absolute;right:0;top:50%;width:7px;height:7px;border-radius:50%;background:var(--accent);transform:translate(50%,-50%);}
+  .art.in img{transform:scale(1);filter:none;}
+  .art.in .cover{transform:scaleY(0);}
+  .art.in .seam{top:0;opacity:1;}
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity 1s var(--ease) var(--d,0ms),transform 1s var(--ease) var(--d,0ms);}
+  .reveal.in{opacity:1;transform:none;}
+
+  /* ---------- Grid galleries ---------- */
+  .grid{display:grid;gap:clamp(20px,3vw,46px);grid-template-columns:repeat(auto-fill,minmax(280px,1fr));padding-bottom:clamp(40px,7vw,90px);}
   .tile{cursor:pointer;}
-  .tile figure{margin:0;}
-  .tile .frame{position:relative;overflow:hidden;background:#f3f3f1;aspect-ratio:4/5;}
-  .tile .frame img{width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);}
-  .tile:hover .frame img{transform:scale(1.04);}
-  .placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#efeeec 0%,#e4e3df 100%);color:#bdbbb3;font-family:var(--serif);font-style:italic;font-size:40px;letter-spacing:.04em;}
-  .caption{text-align:center;margin-top:14px;font-family:var(--serif);font-style:italic;font-size:19px;color:#2a2a2a;}
-  .count{display:block;font-family:var(--sans);font-style:normal;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#aeaca5;margin-top:5px;}
+  .tile .art{aspect-ratio:4/5;}
+  .tile .art img{width:100%;height:100%;object-fit:cover;}
+  .tile.in:hover .art img{transform:scale(1.05);}
+  .placeholder{position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;background:var(--paper);color:var(--faint);font-family:var(--display);font-style:italic;font-size:40px;}
+  .cap{font-family:var(--display);font-style:italic;font-size:21px;text-align:center;margin-top:16px;color:#2a2722;}
+  .cap .n{display:block;font-family:var(--ui);font-style:normal;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);margin-top:6px;}
 
-  .wall{column-count:3;column-gap:clamp(14px,2.4vw,26px);}
-  .wall figure{margin:0 0 clamp(14px,2.4vw,26px);break-inside:avoid;background:#f3f3f1;cursor:pointer;overflow:hidden;}
-  .wall img{width:100%;height:auto;transition:opacity .3s ease;}
-  .wall figure:hover img{opacity:.86;}
-  @media(max-width:860px){.wall{column-count:2;}}
-  @media(max-width:520px){.wall{column-count:1;}}
+  /* ---------- Wall galleries ---------- */
+  .feature-head{text-align:center;font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(26px,4vw,44px);margin:0 0 clamp(34px,5vw,56px);}
+  .wall{column-count:3;column-gap:clamp(16px,2.4vw,30px);padding-bottom:clamp(40px,7vw,90px);}
+  .wall .art{margin:0 0 clamp(16px,2.4vw,30px);break-inside:avoid;cursor:pointer;display:block;}
+  @media(max-width:880px){.wall{column-count:2;}}
+  @media(max-width:540px){.wall{column-count:1;}}
+  .empty-note{text-align:center;color:var(--faint);font-family:var(--display);font-style:italic;font-size:17px;margin:6px auto 40px;max-width:540px;}
 
-  .section-head{font-family:var(--serif);font-style:italic;font-size:clamp(24px,4vw,34px);text-align:center;margin:0 0 clamp(26px,4vw,44px);font-weight:500;}
-  .crumb{text-align:center;margin:-14px 0 34px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;}
-  .crumb button{background:none;border:none;cursor:pointer;color:var(--muted);font:inherit;letter-spacing:inherit;text-transform:inherit;}
-  .crumb button:hover{color:var(--ink);}
-  .empty-note{text-align:center;color:#a8a6a0;font-family:var(--serif);font-style:italic;font-size:16px;margin:10px auto 30px;max-width:520px;}
+  /* ---------- Biography ---------- */
+  .bio{max-width:720px;margin:0 auto;padding-top:6px;}
+  .bio p{margin:0 0 1.45em;font-size:clamp(17px,1.6vw,20px);color:#3a3630;line-height:1.7;}
+  .bio p:first-child{font-size:clamp(20px,2.1vw,26px);line-height:1.55;color:var(--ink);}
+  .bio p:first-child::first-letter{font-size:1em;}
+  .bio-portrait{max-width:660px;margin:clamp(44px,7vw,80px) auto;}
+  .bio-portrait .art{aspect-ratio:3/2;}
+  .bio-portrait img{width:100%;height:100%;object-fit:cover;}
+  .cv{max-width:800px;margin:clamp(36px,6vw,60px) auto 0;padding-bottom:clamp(50px,8vw,100px);}
+  .cv h3{text-align:center;font-family:var(--ui);font-weight:400;text-transform:uppercase;letter-spacing:.3em;font-size:12px;margin:0 0 6px;color:var(--muted);}
+  .cv .loc{text-align:center;font-family:var(--ui);color:var(--faint);font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin:0 0 30px;}
+  .cv h4{font-family:var(--display);font-style:italic;font-weight:500;font-size:23px;color:var(--ink);margin:42px 0 12px;padding-bottom:12px;border-bottom:1px solid var(--line);}
+  .cv-row{display:grid;grid-template-columns:92px 1fr;gap:20px;padding:12px 0;border-bottom:1px solid #efece4;}
+  .cv-row .yr{font-family:var(--ui);font-size:11.5px;color:var(--muted);letter-spacing:.06em;padding-top:5px;}
+  .cv-row .role{font-family:var(--display);font-size:18px;color:#221f1b;line-height:1.3;}
+  .cv-row .role span{display:block;font-size:15px;color:var(--muted);margin-top:2px;font-style:italic;}
+  @media(max-width:520px){.cv-row{grid-template-columns:70px 1fr;gap:14px;}}
 
-  /* Biography */
-  .bio{max-width:760px;margin:0 auto;}
-  .bio p{margin:0 0 1.5em;font-size:16px;color:#2c2c2c;}
-  .bio-portrait{max-width:620px;margin:clamp(36px,6vw,64px) auto;}
-  .bio-portrait img{aspect-ratio:3/2;object-fit:cover;background:#f3f3f1;}
-  .cv{max-width:780px;margin:clamp(30px,5vw,52px) auto 0;}
-  .cv h3{text-align:center;font-weight:400;text-transform:uppercase;letter-spacing:.3em;font-size:13px;margin:0 0 8px;color:var(--muted);}
-  .cv .loc{text-align:center;color:var(--muted);font-size:13px;letter-spacing:.04em;margin:0 0 26px;}
-  .cv h4{font-weight:500;letter-spacing:.16em;text-transform:uppercase;font-size:12px;color:#111;margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line);}
-  .cv-row{display:grid;grid-template-columns:84px 1fr;gap:18px;padding:11px 0;border-bottom:1px solid #f3f3f3;}
-  .cv-row .yr{font-size:12.5px;color:var(--muted);letter-spacing:.04em;padding-top:2px;}
-  .cv-row .role{font-weight:400;color:#1d1d1d;font-size:15px;}
-  .cv-row .role span{display:block;color:var(--muted);font-size:13.5px;margin-top:2px;}
-  @media(max-width:520px){.cv-row{grid-template-columns:64px 1fr;gap:12px;}}
+  /* ---------- Press ---------- */
+  .press{max-width:840px;margin:0 auto;padding-bottom:clamp(50px,8vw,100px);}
+  .press .lede{font-family:var(--display);font-style:italic;font-size:clamp(19px,2vw,24px);text-align:center;color:#4a463f;max-width:680px;margin:0 auto 52px;line-height:1.55;}
+  .press-group{margin-bottom:42px;}
+  .press-group h4{font-family:var(--display);font-style:italic;font-weight:500;font-size:21px;color:var(--ink);margin:0 0 16px;line-height:1.35;}
+  .press-group .cite{font-family:var(--ui);font-weight:300;font-size:13px;color:#5b564e;line-height:1.7;padding:10px 0;border-bottom:1px solid #efece4;}
+  .press-group .cite a{color:var(--ink);border-bottom:1px solid var(--faint);}
+  .press-group .cite a:hover{border-color:var(--ink);}
 
-  /* Press */
-  .press{max-width:820px;margin:0 auto;}
-  .press .lede{font-family:var(--serif);font-style:italic;font-size:19px;text-align:center;color:#444;max-width:660px;margin:0 auto 46px;line-height:1.6;}
-  .press-group{margin-bottom:40px;}
-  .press-group h4{font-weight:500;font-size:15px;letter-spacing:.02em;color:#111;margin:0 0 16px;line-height:1.4;}
-  .press-group .cite{font-size:13.5px;color:#555;line-height:1.7;padding:9px 0;border-bottom:1px solid #f3f3f3;}
-  .press-group .cite a{color:#3a5a8a;word-break:break-word;}
-  .press-group .cite a:hover{text-decoration:underline;}
+  /* ---------- Contact ---------- */
+  .contact{max-width:600px;margin:clamp(20px,5vh,60px) auto clamp(60px,10vw,120px);text-align:center;}
+  .contact .eyebrow{display:block;margin-bottom:10px;}
+  .contact .big{font-family:var(--display);font-weight:300;font-size:clamp(26px,3.4vw,44px);margin:0 0 46px;}
+  .contact .big a{border-bottom:1px solid var(--line);padding-bottom:3px;transition:border-color .3s ease;}
+  .contact .big a:hover{border-color:var(--ink);}
 
-  /* Contact */
-  .contact{max-width:560px;margin:6vh auto;text-align:center;}
-  .contact .label{font-size:12px;text-transform:uppercase;letter-spacing:.22em;color:var(--muted);margin-bottom:6px;}
-  .contact h2{font-weight:400;text-transform:uppercase;letter-spacing:.22em;font-size:15px;margin:0 0 40px;}
-  .contact a{color:#1a1a1a;border-bottom:1px solid #cfcfcf;padding-bottom:1px;}
-  .contact a:hover{border-color:#1a1a1a;}
+  footer{border-top:1px solid var(--line);padding:40px var(--gut);text-align:center;font-family:var(--ui);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);}
 
-  footer{border-top:1px solid var(--line);margin-top:60px;padding:34px var(--gut);text-align:center;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#9a9a9a;}
-
-  /* Lightbox */
-  .lb{position:fixed;inset:0;z-index:100;background:rgba(255,255,255,.97);display:none;align-items:center;justify-content:center;}
+  /* ---------- Lightbox ---------- */
+  .lb{position:fixed;inset:0;z-index:120;background:rgba(251,250,247,.98);display:none;align-items:center;justify-content:center;}
   .lb.open{display:flex;}
-  .lb img{max-width:90vw;max-height:84vh;width:auto;height:auto;object-fit:contain;box-shadow:0 30px 80px -40px rgba(0,0,0,.5);}
-  .lb-close,.lb-nav{position:absolute;background:none;border:none;cursor:pointer;color:#1a1a1a;font-family:var(--sans);}
-  .lb-close{top:22px;right:26px;font-size:26px;line-height:1;font-weight:300;}
-  .lb-nav{top:50%;transform:translateY(-50%);font-size:40px;font-weight:200;padding:18px;opacity:.6;transition:opacity .2s;}
+  .lb img{max-width:90vw;max-height:84vh;width:auto;height:auto;object-fit:contain;box-shadow:0 40px 100px -50px rgba(0,0,0,.5);}
+  .lb-close,.lb-nav{position:absolute;background:none;border:none;cursor:pointer;color:var(--ink);font-family:var(--ui);}
+  .lb-close{top:24px;right:28px;font-size:24px;font-weight:300;}
+  .lb-nav{top:50%;transform:translateY(-50%);font-size:38px;font-weight:200;padding:18px;opacity:.55;transition:opacity .2s;}
   .lb-nav:hover{opacity:1;}
-  .lb-prev{left:14px;} .lb-next{right:14px;}
-  .lb-meta{position:absolute;bottom:22px;left:0;right:0;text-align:center;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
-  @media(max-width:520px){.lb-nav{font-size:30px;padding:10px;}}
+  .lb-prev{left:14px;}.lb-next{right:14px;}
+  .lb-meta{position:absolute;bottom:26px;left:0;right:0;text-align:center;font-family:var(--ui);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);}
+  @media(max-width:540px){.lb-nav{font-size:28px;padding:10px;}}
 
-  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;}
+    .reveal{opacity:1!important;transform:none!important;}
+    .art img{transform:none!important;filter:none!important;}
+    .art .cover{display:none!important;}
+    .art .seam{display:none!important;}
+    html{scroll-behavior:auto;}
+  }
 </style>
 </head>
 <body>
-<header>
+<header id="hdr">
   <div class="masthead">
-    <div class="brand" onclick="go('home')">Aniyah Monae</div>
-    <nav class="primary" id="nav">
+    <div class="brand" onclick="go('home')">Aniyah <span>Monae</span></div>
+    <nav class="primary">
       <div class="folder" id="artworkFolder">
         <button onclick="toggleFolder(event)" data-page="artwork">Artwork<span class="caret">▾</span></button>
         <div class="folder-menu">
@@ -139,82 +208,94 @@
 </header>
 
 <main>
+  <!-- HOME -->
   <section class="page active" id="page-home">
-    <p class="page-title">Artwork</p>
-    <div class="grid" id="home-grid"></div>
+    <div class="hero">
+      <h1 data-par="0.10">Aniyah<br><span class="it">Monae</span></h1>
+      <div class="tag" data-par="0.05">Multidisciplinary Artist &nbsp;·&nbsp; <b>Aspiring Master Cutter</b> &nbsp;·&nbsp; Louisville, KY</div>
+      <div class="scrollcue"><span>Scroll</span><span class="ln"></span></div>
+    </div>
+
+    <div class="lookbook-head">
+      <h2 class="reveal">The Lookbook</h2>
+      <span class="hint reveal">Drag / swipe →</span>
+    </div>
+    <div class="lookbook" id="lookbook"></div>
+
+    <div class="index" id="home-index"></div>
   </section>
 
-  <section class="page" id="page-installation"><p class="page-title">Installation</p><div class="crumb"><button onclick="go('home')">← Back</button></div><div id="gallery-installation"></div></section>
-  <section class="page" id="page-conceptual"><p class="page-title">Conceptual</p><div class="crumb"><button onclick="go('home')">← Back</button></div><div id="gallery-conceptual"></div></section>
-  <section class="page" id="page-exhibition"><p class="page-title">Exhibition</p><div id="gallery-exhibition"></div></section>
-  <section class="page" id="page-costume"><p class="page-title">Costume</p><div class="crumb"><button onclick="go('home')">← Back</button></div><div id="gallery-costume"></div></section>
-  <section class="page" id="page-illustration"><p class="page-title">Illustration</p><div class="crumb"><button onclick="go('home')">← Back</button></div><div id="gallery-illustration"></div></section>
-  <section class="page" id="page-tailoring"><p class="page-title">Tailoring</p><div id="gallery-tailoring"></div></section>
-  <section class="page" id="page-fashion"><p class="page-title">Fashion</p><div class="crumb"><button onclick="go('home')">← Back</button></div><div id="gallery-fashion"></div></section>
+  <!-- GALLERY PAGES -->
+  <section class="page" id="page-installation"><div class="page-head"><span class="eyebrow">Artwork</span><h1><em>Installation</em></h1></div><div class="wrap"><button class="back" onclick="go('home')">← Index</button><div id="gallery-installation"></div></div></section>
+  <section class="page" id="page-conceptual"><div class="page-head"><span class="eyebrow">Artwork</span><h1><em>Conceptual</em></h1></div><div class="wrap"><button class="back" onclick="go('home')">← Index</button><div id="gallery-conceptual"></div></div></section>
+  <section class="page" id="page-exhibition"><div class="page-head"><span class="eyebrow">Artwork</span><h1><em>Exhibition</em></h1></div><div class="wrap"><button class="back" onclick="go('home')">← Index</button><div id="gallery-exhibition"></div></div></section>
+  <section class="page" id="page-costume"><div class="page-head"><span class="eyebrow">Artwork</span><h1><em>Costume</em></h1></div><div class="wrap"><button class="back" onclick="go('home')">← Index</button><div id="gallery-costume"></div></div></section>
+  <section class="page" id="page-illustration"><div class="page-head"><span class="eyebrow">Artwork</span><h1><em>Illustration</em></h1></div><div class="wrap"><button class="back" onclick="go('home')">← Index</button><div id="gallery-illustration"></div></div></section>
+  <section class="page" id="page-tailoring"><div class="page-head"><span class="eyebrow">Artwork</span><h1><em>Tailoring</em></h1></div><div class="wrap"><button class="back" onclick="go('home')">← Index</button><div id="gallery-tailoring"></div></div></section>
+  <section class="page" id="page-fashion"><div class="page-head"><span class="eyebrow">Artwork</span><h1><em>Fashion</em></h1></div><div class="wrap"><button class="back" onclick="go('home')">← Index</button><div id="gallery-fashion"></div></div></section>
 
   <!-- BIOGRAPHY -->
   <section class="page" id="page-biography">
-    <div class="bio">
-      <p>Aniyah Monae is an emerging multidisciplinary artist and aspiring master cutter from Louisville, Kentucky. Her practice spans installation art, conceptual art, costume design, tailoring, garment construction, pattern making, weaving, illustration, and textile-based art, with a focus on the relationship between technical craftsmanship, material knowledge, and cultural storytelling.</p>
-      <p>Working across fashion, theatre, opera, and contemporary art contexts, Aniyah approaches making as both a skilled trade and an artistic practice. Her work is grounded in a commitment to traditional craft techniques while exploring their relevance within contemporary culture. Through garments, textiles, and mixed-media works, she investigates identity, labor, history, and the social significance of clothing.</p>
-      <p>She is particularly interested in the preservation of traditional making methods, the intersection of craft and contemporary art, and the role of clothing as a site of personal and collective memory. Drawing from experiences across performance, fashion, and visual art, her work bridges disciplines while remaining rooted in the belief that mastery is built through sustained practice, technical rigor, and a lifelong dedication to learning.</p>
-    </div>
-    <div class="bio-portrait"><img id="bio-portrait-img" alt="Aniyah Monae" loading="lazy"></div>
-    <div class="cv">
-      <h3>CV</h3>
-      <p class="loc">Louisville, Kentucky, USA</p>
-
-      <h4>Theatre &amp; Performance</h4>
-      <div class="cv-row"><div class="yr">2026</div><div class="role">Costume Designer<span>Pipeline — University of Louisville Theatre Arts, Louisville, KY</span></div></div>
-      <div class="cv-row"><div class="yr">2024–25</div><div class="role">Costume Designer<span>This Little Light of Mine — Kentucky Opera, Louisville, KY</span></div></div>
-      <div class="cv-row"><div class="yr">2022</div><div class="role">Costume Designer<span>Gloria — University of Louisville Theatre Arts, Louisville, KY</span></div></div>
-      <div class="cv-row"><div class="yr">2022</div><div class="role">Assistant Costume Designer<span>The Gift of Magi — Kentucky Opera, Louisville, KY</span></div></div>
-      <div class="cv-row"><div class="yr">2022</div><div class="role">Co-Designer<span>The Unknown Project — IDEAS xLab, Louisville, KY</span></div></div>
-      <div class="cv-row"><div class="yr">2022</div><div class="role">Costume Designer<span>Don't Do Drugs Kids — University of Louisville Theatre Arts, Louisville, KY</span></div></div>
-      <div class="cv-row"><div class="yr">2022</div><div class="role">Costume Designer<span>The Proposal — University of Louisville Theatre Arts, Louisville, KY</span></div></div>
-      <div class="cv-row"><div class="yr">2022</div><div class="role">Assistant Costume Designer<span>Afromemory — University of Louisville Theatre Arts, Louisville, KY</span></div></div>
-      <div class="cv-row"><div class="yr">2022</div><div class="role">Stitcher<span>Orfeo ed Euridice — Kentucky Opera, Louisville, KY</span></div></div>
-      <div class="cv-row"><div class="yr">2022</div><div class="role">Costumer on Set<span>Slap Me! I Must Be Dreaming — Independent Short Film, Louisville, KY</span></div></div>
-      <div class="cv-row"><div class="yr">2021</div><div class="role">Assistant Designer / Seamstress<span>Holiday Celebration — Kentucky Opera, Louisville, KY</span></div></div>
-      <div class="cv-row"><div class="yr">2021</div><div class="role">Co-Designer<span>Sherlock Holmes — Trinity High School Theatre Arts, Louisville, KY</span></div></div>
-      <div class="cv-row"><div class="yr">2021</div><div class="role">Seamstress<span>BET Awards Performance — Michael Schmidt Studios, Los Angeles, CA</span></div></div>
-
-      <h4>Fashion</h4>
-      <div class="cv-row"><div class="yr">2025</div><div class="role">Talent / Creative Assistant<span>Reebok x Walker Wear Collaboration — Manhattan, NY</span></div></div>
-      <div class="cv-row"><div class="yr">2024</div><div class="role">Creative Director &amp; Stylist<span>Walker Wear Editorial Campaigns — Los Angeles, CA / Brooklyn, NY</span></div></div>
-      <div class="cv-row"><div class="yr">2023–24</div><div class="role">Creative Assistant<span>Walker Wear — Brooklyn, NY</span></div></div>
-      <div class="cv-row"><div class="yr">2023–24</div><div class="role">Program Mentor<span>Build Your Own Brand Program — Brooklyn, NY</span></div></div>
-      <div class="cv-row"><div class="yr">2023</div><div class="role">Assistant Designer &amp; Seamstress<span>The Web Has No Weaver — New York Fashion Week</span></div></div>
-      <div class="cv-row"><div class="yr">2023</div><div class="role">Fashion Artist &amp; Stylist<span>Creative Playground — Louisville, KY</span></div></div>
-      <div class="cv-row"><div class="yr">2023</div><div class="role">Seamstress<span>KY Boy Tyler — Louisville, KY</span></div></div>
-      <div class="cv-row"><div class="yr">2022</div><div class="role">Fashion Artist<span>The Hite Art &amp; Design Annual Student Exhibition — Louisville, KY</span></div></div>
-      <div class="cv-row"><div class="yr">2022</div><div class="role">Alterations Specialist / Seamstress<span>David's Bridal — Louisville, KY</span></div></div>
-
-      <h4>Tailoring &amp; Textile Training</h4>
-      <div class="cv-row"><div class="yr">2025–</div><div class="role">Tailor<span>RODES For Him &amp; For Her — Louisville, KY</span></div></div>
-      <div class="cv-row"><div class="yr">2025–</div><div class="role">Studio Intern<span>The Little Loomhouse — Louisville, KY</span></div></div>
-      <div class="cv-row"><div class="yr">2025–26</div><div class="role">Tailor Apprentice<span>Victory Pass Equestrian Apparel — Louisville, KY</span></div></div>
-      <div class="cv-row"><div class="yr">2025</div><div class="role">Tailor Apprentice<span>U.S. Tailor — Louisville, KY</span></div></div>
-      <div class="cv-row"><div class="yr">2024</div><div class="role">Tailor Intern<span>Studio Unbiased — Los Angeles, CA</span></div></div>
-      <div class="cv-row"><div class="yr">2020–22</div><div class="role">Costume Shop Apprentice<span>University of Louisville Theatre Arts — Louisville, KY</span></div></div>
-
-      <h4>Education</h4>
-      <div class="cv-row"><div class="yr">2022</div><div class="role">B.S. in Theatre Arts — Costume Design &amp; Technology<span>University of Louisville — Louisville, KY</span></div></div>
+    <div class="page-head"><span class="eyebrow">About</span><h1><em>Biography</em></h1></div>
+    <div class="wrap">
+      <div class="bio">
+        <p class="reveal">Aniyah Monae is an emerging multidisciplinary artist and aspiring master cutter from Louisville, Kentucky. Her practice spans installation art, conceptual art, costume design, tailoring, garment construction, pattern making, weaving, illustration, and textile-based art, with a focus on the relationship between technical craftsmanship, material knowledge, and cultural storytelling.</p>
+        <p class="reveal">Working across fashion, theatre, opera, and contemporary art contexts, Aniyah approaches making as both a skilled trade and an artistic practice. Her work is grounded in a commitment to traditional craft techniques while exploring their relevance within contemporary culture. Through garments, textiles, and mixed-media works, she investigates identity, labor, history, and the social significance of clothing.</p>
+        <p class="reveal">She is particularly interested in the preservation of traditional making methods, the intersection of craft and contemporary art, and the role of clothing as a site of personal and collective memory. Drawing from experiences across performance, fashion, and visual art, her work bridges disciplines while remaining rooted in the belief that mastery is built through sustained practice, technical rigor, and a lifelong dedication to learning.</p>
+      </div>
+      <div class="bio-portrait reveal"><div class="art"><div class="art-inner"><img id="bio-portrait-img" alt="Aniyah Monae" loading="lazy"></div><span class="cover"></span><span class="seam"></span></div></div>
+      <div class="cv">
+        <h3>Curriculum Vitae</h3>
+        <p class="loc">Louisville, Kentucky, USA</p>
+        <h4 class="reveal">Theatre &amp; Performance</h4>
+        <div class="cv-row reveal"><div class="yr">2026</div><div class="role">Costume Designer<span>Pipeline — University of Louisville Theatre Arts, Louisville, KY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2024–25</div><div class="role">Costume Designer<span>This Little Light of Mine — Kentucky Opera, Louisville, KY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2022</div><div class="role">Costume Designer<span>Gloria — University of Louisville Theatre Arts, Louisville, KY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2022</div><div class="role">Assistant Costume Designer<span>The Gift of Magi — Kentucky Opera, Louisville, KY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2022</div><div class="role">Co-Designer<span>The Unknown Project — IDEAS xLab, Louisville, KY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2022</div><div class="role">Costume Designer<span>Don't Do Drugs Kids — University of Louisville Theatre Arts, Louisville, KY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2022</div><div class="role">Costume Designer<span>The Proposal — University of Louisville Theatre Arts, Louisville, KY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2022</div><div class="role">Assistant Costume Designer<span>Afromemory — University of Louisville Theatre Arts, Louisville, KY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2022</div><div class="role">Stitcher<span>Orfeo ed Euridice — Kentucky Opera, Louisville, KY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2022</div><div class="role">Costumer on Set<span>Slap Me! I Must Be Dreaming — Independent Short Film, Louisville, KY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2021</div><div class="role">Assistant Designer / Seamstress<span>Holiday Celebration — Kentucky Opera, Louisville, KY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2021</div><div class="role">Co-Designer<span>Sherlock Holmes — Trinity High School Theatre Arts, Louisville, KY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2021</div><div class="role">Seamstress<span>BET Awards Performance — Michael Schmidt Studios, Los Angeles, CA</span></div></div>
+        <h4 class="reveal">Fashion</h4>
+        <div class="cv-row reveal"><div class="yr">2025</div><div class="role">Talent / Creative Assistant<span>Reebok x Walker Wear Collaboration — Manhattan, NY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2024</div><div class="role">Creative Director &amp; Stylist<span>Walker Wear Editorial Campaigns — Los Angeles, CA / Brooklyn, NY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2023–24</div><div class="role">Creative Assistant<span>Walker Wear — Brooklyn, NY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2023–24</div><div class="role">Program Mentor<span>Build Your Own Brand Program — Brooklyn, NY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2023</div><div class="role">Assistant Designer &amp; Seamstress<span>The Web Has No Weaver — New York Fashion Week</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2023</div><div class="role">Fashion Artist &amp; Stylist<span>Creative Playground — Louisville, KY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2023</div><div class="role">Seamstress<span>KY Boy Tyler — Louisville, KY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2022</div><div class="role">Fashion Artist<span>The Hite Art &amp; Design Annual Student Exhibition — Louisville, KY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2022</div><div class="role">Alterations Specialist / Seamstress<span>David's Bridal — Louisville, KY</span></div></div>
+        <h4 class="reveal">Tailoring &amp; Textile Training</h4>
+        <div class="cv-row reveal"><div class="yr">2025–</div><div class="role">Tailor<span>RODES For Him &amp; For Her — Louisville, KY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2025–</div><div class="role">Studio Intern<span>The Little Loomhouse — Louisville, KY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2025–26</div><div class="role">Tailor Apprentice<span>Victory Pass Equestrian Apparel — Louisville, KY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2025</div><div class="role">Tailor Apprentice<span>U.S. Tailor — Louisville, KY</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2024</div><div class="role">Tailor Intern<span>Studio Unbiased — Los Angeles, CA</span></div></div>
+        <div class="cv-row reveal"><div class="yr">2020–22</div><div class="role">Costume Shop Apprentice<span>University of Louisville Theatre Arts — Louisville, KY</span></div></div>
+        <h4 class="reveal">Education</h4>
+        <div class="cv-row reveal"><div class="yr">2022</div><div class="role">B.S. in Theatre Arts — Costume Design &amp; Technology<span>University of Louisville — Louisville, KY</span></div></div>
+      </div>
     </div>
   </section>
 
   <!-- PRESS -->
   <section class="page" id="page-press">
-    <p class="page-title">Press</p>
-    <div class="press">
-      <p class="lede">Selected media coverage of exhibitions, performances, productions, and collaborative projects to which Aniyah contributed as an artist, costume designer, co-designer, creative assistant, seamstress, or talent.</p>
-      <div class="press-group">
+    <div class="page-head"><span class="eyebrow">Selected</span><h1><em>Press</em></h1></div>
+    <div class="wrap"><div class="press">
+      <p class="lede reveal">Selected media coverage of exhibitions, performances, productions, and collaborative projects to which Aniyah contributed as an artist, costume designer, co-designer, creative assistant, seamstress, or talent.</p>
+      <div class="press-group reveal">
         <h4>Pipeline (Costume Designer) — University of Louisville Theatre Arts, 2026</h4>
         <div class="cite">WHAS11, “UofL Honors Black History Month with Their Production of ‘Pipeline’,” Great Day Live, Feb. 2025. <a href="https://www.whas11.com/article/features/great-day-live/uofl-honors-black-history-month-with-their-production-of-pipeline/417-409e6719-43e1-40a5-a60f-d21dadc78665" target="_blank" rel="noopener">Link</a></div>
         <div class="cite">University of Louisville, “The Department of Theatre Arts and African American Theatre Program Presents ‘Pipeline’ by Dominique Morisseau,” College of Arts &amp; Sciences, Feb. 2025. <a href="https://artsandsciences.louisville.edu/news/department-theatre-arts-and-african-american-theatre-program-presents-pipeline-dominique" target="_blank" rel="noopener">Link</a></div>
         <div class="cite">The Louisville Cardinal, “Student Actors Take Stage for Last Weekend of Pipeline,” Feb. 2026. <a href="https://www.louisvillecardinal.com/2026/02/student-actors-take-stage-for-last-weekend-of-pipeline/" target="_blank" rel="noopener">Link</a></div>
       </div>
-      <div class="press-group">
+      <div class="press-group reveal">
         <h4>Reebok × Walker Wear Collaboration (Talent / Creative Assistant), 2025</h4>
         <div class="cite">Reebok, “Reebok x Walker Wear Celebrate Unity and Empowerment with New Collection, Available Globally Spring 2025,” Reebok News, Mar. 2025. <a href="https://news.reebok.com/latest-news/reebok-x-walker-wear-celebrate-unity-and-empowerment-with-new-collection--available-globally-spring-/s/746b4dd2-5d8a-4d78-8160-81f90875497a" target="_blank" rel="noopener">Link</a></div>
         <div class="cite">Essence, Mar. 2025. <a href="https://www.essence.com/fashion/april-walker-reebok-womens-history-month-capsule/" target="_blank" rel="noopener">Link</a></div>
@@ -222,7 +303,7 @@
         <div class="cite">Design Scene, “Reebok x Walker Wear Collection Champions Unity and Empowerment,” Mar. 2025. <a href="https://www.designscene.net/2025/03/reebok-x-walker-wear.html" target="_blank" rel="noopener">Link</a></div>
         <div class="cite">Jean E. Palmieri, “Streetwear Icon April Walker Reimagines Reebok's Freestyle Hi for Women's Empowerment Collection,” WWD / Footwear News, Mar. 5, 2025. <a href="https://wwd.com/footwear-news/sneaker-news/reebok-april-walker-collaboration-freestyle-hi-sneaker-1237708138/" target="_blank" rel="noopener">Link</a></div>
       </div>
-      <div class="press-group">
+      <div class="press-group reveal">
         <h4>This Little Light of Mine (Costume Designer) — Kentucky Opera, 2025</h4>
         <div class="cite">Brenda Sparks, “Democracy and the Arts: What Americans Can Learn from Fannie Lou Hamer's Story,” The Courier-Journal, Feb. 20, 2025. <a href="https://www.courier-journal.com/story/opinion/contributors/2025/02/20/kentucky-opera-fannie-lou-hamer-this-little-light-of-mine-art-democracy-civil-rights/79069363007/" target="_blank" rel="noopener">Link</a></div>
         <div class="cite">Opera America, “This Little Light of Mine,” Performance Listing. <a href="https://www.operaamerica.org/calendar/opera%20performance/22603/this-little-light-of-mine" target="_blank" rel="noopener">Link</a></div>
@@ -230,7 +311,7 @@
         <div class="cite">A.A. Cristi, “Kentucky Opera Will Host Louisville Premiere of This Little Light of Mine,” BroadwayWorld, Jan. 31, 2025. <a href="https://www.broadwayworld.com/louisville/article/Kentucky-Opera-Will-Host-Louisville-Premiere-of-THIS-LITTLE-LIGHT-OF-MINE-20250131" target="_blank" rel="noopener">Link</a></div>
         <div class="cite">Kentucky Opera, “Kentucky Opera Announces Louisville Premiere of This Little Light of Mine Honoring Voting Rights Icon Fannie Lou Hamer,” Press Release, Jan. 2025. <a href="https://kyopera.org/wp-content/uploads/2025/01/KO-This-Little-LIght-Press-Release-1.pdf" target="_blank" rel="noopener">Link</a></div>
       </div>
-      <div class="press-group">
+      <div class="press-group reveal">
         <h4>The (Un)Known Project / Journeys to Freedom (Co-Designer) — IDEAS xLab, 2022</h4>
         <div class="cite">Yasmine Jumaa, “In ‘Journeys to Freedom,’ Actors Depict Stories of Escape Across the Ohio River,” Louisville Public Media, Jun. 9, 2022. <a href="https://www.lpm.org/news/2022-06-09/in-journeys-to-freedom-actors-depict-stories-of-escape-across-the-ohio-river" target="_blank" rel="noopener">Link</a></div>
         <div class="cite">WDRB News, “Belle of Louisville to Launch ‘Journeys to Freedom’ Cruises This Summer,” Jun. 2022. <a href="https://www.wdrb.com/news/belle-of-louisville-to-launch-journeys-to-freedom-cruises-this-summer/article_bbdde5ba-e0fb-11ec-8298-87c389b5859e.html" target="_blank" rel="noopener">Link</a></div>
@@ -238,33 +319,33 @@
         <div class="cite">WAVE3 News, “Immersive Belle of Louisville Cruise to Depict Families Escaping Slavery,” Jun. 2022. <a href="https://www.wave3.com/2022/06/02/immersive-belle-louisville-cruise-depict-families-escaping-slavery/" target="_blank" rel="noopener">Link</a></div>
         <div class="cite">WAVE3 News, “‘Journeys to Freedom’ Kicks Off Special Historical Event,” Jun. 20, 2023. <a href="https://www.wave3.com/video/2023/06/20/journeys-freedom-kicks-off-special-historical-event/" target="_blank" rel="noopener">Link</a></div>
       </div>
-      <div class="press-group">
+      <div class="press-group reveal">
         <h4>Hite Art &amp; Design Annual Student Exhibition (Fashion Artist), 2022</h4>
         <div class="cite">The Louisville Cardinal, “Hite Art &amp; Design Annual Student Exhibition,” Dec. 2022. <a href="https://www.louisvillecardinal.com/2022/12/hite-art-design-annual-student-exhibition/" target="_blank" rel="noopener">Link</a></div>
       </div>
-      <div class="press-group">
+      <div class="press-group reveal">
         <h4>BET Awards Performance — Lil Nas X, “MONTERO” (Seamstress) — Michael Schmidt Studios, 2021</h4>
         <div class="cite">BET, “BET Awards 2021: Lil Nas X Pays Homage to Michael Jackson With ‘MONTERO’ Performance,” Jun. 2021. <a href="https://www.bet.com/article/gj201r/bet-awards-2021-lil-nas-x-pays-homage-to-michael-jackson" target="_blank" rel="noopener">Link</a></div>
         <div class="cite">Glenn Rowley, “Lil Nas X Walks Like an Egyptian, Makes Out With Backup Dancer at 2021 BET Awards,” Billboard, Jun. 27, 2021. <a href="https://www.billboard.com/music/awards/lil-nas-x-montero-2021-bet-awards-9593527/" target="_blank" rel="noopener">Link</a></div>
         <div class="cite">E! News, “Lil Nas X Heats Up the 2021 BET Awards With Steamy Kiss During ‘Montero’ Performance,” E! Online, Jun. 27, 2021. <a href="https://www.eonline.com/news/1278256/lil-nas-x-heats-up-the-2021-bet-awards-with-steamy-kiss-during-montero-performance" target="_blank" rel="noopener">Link</a></div>
       </div>
-    </div>
+    </div></div>
   </section>
 
   <!-- CONTACT -->
   <section class="page" id="page-contact">
+    <div class="page-head"><span class="eyebrow">Get in touch</span><h1><em>Contact</em></h1></div>
     <div class="contact">
-      <div class="label">Contact</div>
-      <h2><a href="mailto:aniy4hmonae@gmail.com">aniy4hmonae@gmail.com</a></h2>
-      <div class="label">Social Media</div>
-      <h2><a href="https://www.instagram.com/aniy4hmonae/" target="_blank" rel="noopener">@aniy4hmonae</a></h2>
+      <span class="eyebrow">Email</span>
+      <p class="big"><a href="mailto:aniy4hmonae@gmail.com">aniy4hmonae@gmail.com</a></p>
+      <span class="eyebrow">Instagram</span>
+      <p class="big"><a href="https://www.instagram.com/aniy4hmonae/" target="_blank" rel="noopener">@aniy4hmonae</a></p>
     </div>
   </section>
 </main>
 
-<footer>© Aniyah Monae. All rights reserved.</footer>
+<footer>© Aniyah Monae &nbsp;·&nbsp; All rights reserved</footer>
 
-<!-- Lightbox -->
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image viewer">
   <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
   <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous">‹</button>
@@ -275,10 +356,8 @@
 
 <script>
 /* ============================================================
-   SITE DATA
-   Image URLs already extracted live below. Galleries that are
-   empty get filled automatically when you run populate.py.
-   Everything between the two markers is what the script rewrites.
+   SITE DATA — galleries fill automatically when you run populate.py.
+   Everything between the markers is what the script rewrites.
    ============================================================ */
 /* SITE_DATA_START */
 const ORIGIN = "https://www.aniyahmonae.com";
@@ -619,6 +698,15 @@ const SITE = {
 /* SITE_DATA_END */
 
 const ORDER = ["installation","conceptual","exhibition","costume","illustration","tailoring","fashion"];
+const DESCRIPTIONS = {
+  installation:"Spatial works that stage garment and material as environment.",
+  conceptual:"Image-led studies translating idea into form and figure.",
+  exhibition:"Gallery presentations of textile and mixed-media work.",
+  costume:"Character built through cloth — for stage, opera, and screen.",
+  illustration:"Drawn studies, from technical flats to expressive figures.",
+  tailoring:"The craft at its foundation: cut, construction, and hand.",
+  fashion:"Editorial and collaborative work across collection and campaign."
+};
 const initials = {installation:"In",conceptual:"Co",exhibition:"Ex",costume:"Cs",illustration:"Il",tailoring:"Ta",fashion:"Fa"};
 
 function coverOf(key){
@@ -628,28 +716,50 @@ function coverOf(key){
   for(const p of g.projects){ if(p.cover) return p.cover; if(p.images && p.images[0]) return p.images[0]; }
   return "";
 }
-function ph(label){ return '<div class="placeholder">'+label+'</div>'; }
+function artMarkup(src, alt, placeholderLabel){
+  const inner = src
+    ? '<img src="'+src+'" alt="'+alt+'" loading="lazy">'
+    : '<div class="placeholder">'+(placeholderLabel||'·')+'</div>';
+  return '<div class="art"><div class="art-inner">'+inner+'</div><span class="cover"></span><span class="seam"></span></div>';
+}
+const cap = (label) => label.charAt(0).toUpperCase()+label.slice(1);
 
-/* ---- Home ---- */
+/* ---- Home: lookbook strip + editorial index ---- */
 function renderHome(){
-  const grid = document.getElementById('home-grid');
-  grid.innerHTML = ORDER.map(key=>{
+  const lb = document.getElementById('lookbook');
+  lb.innerHTML = ORDER.map(key=>{
     const cov = coverOf(key);
-    const label = key.charAt(0).toUpperCase()+key.slice(1);
-    const inner = cov ? '<img src="'+cov+'" alt="'+label+'" loading="lazy">' : ph(initials[key]);
-    return '<div class="tile" onclick="go(\''+key+'\')"><figure><div class="frame">'+inner+'</div><figcaption class="caption">'+label+'</figcaption></figure></div>';
+    const label = cap(key);
+    const inner = cov ? '<img src="'+cov+'" alt="'+label+'">' : '<div class="placeholder">'+initials[key]+'</div>';
+    return '<div class="lb-card" onclick="go(\''+key+'\')"><div class="frame">'+inner+'</div><div class="cap">'+label+'<span class="n">View</span></div></div>';
+  }).join('');
+
+  const idx = document.getElementById('home-index');
+  idx.innerHTML = ORDER.map((key,i)=>{
+    const cov = coverOf(key);
+    const label = cap(key);
+    const num = String(i+1).padStart(2,'0');
+    return ''+
+    '<div class="ed">'+
+      '<div class="ed-media tile" onclick="go(\''+key+'\')">'+ artMarkup(cov, label, initials[key]) +'</div>'+
+      '<div class="ed-body reveal">'+
+        '<div class="ed-num">'+num+' / 07</div>'+
+        '<h3 class="ed-title"><em>'+label+'</em></h3>'+
+        '<p class="ed-desc">'+(DESCRIPTIONS[key]||'')+'</p>'+
+        '<button class="ed-link" onclick="event.stopPropagation();go(\''+key+'\')">Explore '+label+'</button>'+
+      '</div>'+
+    '</div>';
   }).join('');
 }
 
-/* ---- Link galleries (cover tiles -> lightbox) ---- */
+/* ---- Link galleries ---- */
 function renderLinks(key){
   const g = SITE[key];
   const host = document.getElementById('gallery-'+key);
   host.innerHTML = '<div class="grid">'+ g.projects.map((p,i)=>{
     const cov = p.cover || (p.images&&p.images[0]) || "";
-    const inner = cov ? '<img src="'+cov+'" alt="'+p.title+'" loading="lazy">' : ph(p.title.charAt(0));
-    const n = (p.images&&p.images.length) ? '<span class="count">'+p.images.length+' images</span>' : '';
-    return '<div class="tile" onclick="openProject(\''+key+'\','+i+')"><figure><div class="frame">'+inner+'</div><figcaption class="caption">'+p.title+n+'</figcaption></figure></div>';
+    const n = (p.images&&p.images.length) ? '<span class="n">'+p.images.length+' images</span>' : '<span class="n">View</span>';
+    return '<div class="tile" style="--d:'+(i*70)+'ms" onclick="openProject(\''+key+'\','+i+')">'+ artMarkup(cov, p.title, p.title.charAt(0)) +'<div class="cap">'+p.title+n+'</div></div>';
   }).join('') + '</div>';
 }
 
@@ -658,15 +768,16 @@ function renderWall(key){
   const g = SITE[key];
   const host = document.getElementById('gallery-'+key);
   let html = '';
-  if(g.heading) html += '<h2 class="section-head">'+g.heading+'</h2>';
+  if(g.heading) html += '<h2 class="feature-head reveal">'+g.heading+'</h2>';
   if(!g.images.length){
     html += '<p class="empty-note">Run populate.py to load this gallery\u2019s images from the live site.</p>';
     host.innerHTML = html; return;
   }
-  html += '<div class="wall">'+ g.images.map((src,i)=>'<figure onclick="openWall(\''+key+'\','+i+')"><img src="'+src+'" alt="'+key+' '+(i+1)+'" loading="lazy"></figure>').join('') +'</div>';
+  html += '<div class="wall">'+ g.images.map((src,i)=>
+    '<div class="art" style="--d:'+((i%3)*60)+'ms" onclick="openWall(\''+key+'\','+i+')"><div class="art-inner"><img src="'+src+'" alt="'+key+' '+(i+1)+'" loading="lazy"></div><span class="cover"></span><span class="seam"></span></div>'
+  ).join('') +'</div>';
   host.innerHTML = html;
 }
-
 function renderGallery(key){
   const host=document.getElementById('gallery-'+key);
   if(!SITE[key]){ if(host) host.innerHTML=''; return; }
@@ -675,23 +786,9 @@ function renderGallery(key){
 
 /* ---- Lightbox ---- */
 let lbSet=[], lbIdx=0;
-function showLb(){
-  const img=document.getElementById('lbImg');
-  img.src=lbSet[lbIdx];
-  document.getElementById('lbMeta').textContent=(lbIdx+1)+' / '+lbSet.length;
-}
-function openLb(images,start){
-  if(!images||!images.length) return false;
-  lbSet=images; lbIdx=start||0;
-  document.getElementById('lb').classList.add('open');
-  document.body.style.overflow='hidden';
-  showLb(); return true;
-}
-function openProject(key,i){
-  const p=SITE[key].projects[i];
-  if(p.images && p.images.length){ openLb(p.images,0); }
-  else { window.open(ORIGIN+'/'+p.slug,'_blank','noopener'); }
-}
+function showLb(){ document.getElementById('lbImg').src=lbSet[lbIdx]; document.getElementById('lbMeta').textContent=(lbIdx+1)+' / '+lbSet.length; }
+function openLb(images,start){ if(!images||!images.length) return false; lbSet=images; lbIdx=start||0; document.getElementById('lb').classList.add('open'); document.body.style.overflow='hidden'; showLb(); return true; }
+function openProject(key,i){ const p=SITE[key].projects[i]; if(p.images && p.images.length){ openLb(p.images,0); } else { window.open(ORIGIN+'/'+p.slug,'_blank','noopener'); } }
 function openWall(key,i){ openLb(SITE[key].images,i); }
 function closeLb(){ document.getElementById('lb').classList.remove('open'); document.body.style.overflow=''; }
 function step(d){ lbIdx=(lbIdx+d+lbSet.length)%lbSet.length; showLb(); }
@@ -706,6 +803,49 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowRight') step(1);
 });
 
+/* ---- Scroll reveal engine (IntersectionObserver) ---- */
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let io;
+function observeReveals(scope){
+  if(REDUCED || !('IntersectionObserver' in window)){
+    (scope||document).querySelectorAll('.reveal,.art,.tile').forEach(el=>el.classList.add('in'));
+    return;
+  }
+  if(!io){
+    io = new IntersectionObserver((entries)=>{
+      entries.forEach(en=>{
+        if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { rootMargin:'0px 0px -12% 0px', threshold:0.12 });
+  }
+  (scope||document).querySelectorAll('.reveal,.art,.tile').forEach(el=>{
+    if(!el.classList.contains('in')) io.observe(el);
+  });
+}
+
+/* ---- Parallax (subtle, rAF) ---- */
+let parEls=[];
+function refreshParallax(){ parEls = REDUCED ? [] : Array.from(document.querySelectorAll('[data-par]')); }
+function onScrollParallax(){
+  if(!parEls.length) return;
+  const vh = window.innerHeight;
+  for(const el of parEls){
+    const r = el.getBoundingClientRect();
+    const center = r.top + r.height/2;
+    const off = (center - vh/2) * -parseFloat(el.dataset.par || 0);
+    el.style.transform = 'translate3d(0,'+off.toFixed(1)+'px,0)';
+  }
+}
+
+/* ---- Lookbook drag-to-scroll (desktop) ---- */
+function initLookbookDrag(){
+  const el=document.getElementById('lookbook'); if(!el) return;
+  let down=false,startX,scroll;
+  el.addEventListener('mousedown',e=>{down=true;el.classList.add('drag');startX=e.pageX;scroll=el.scrollLeft;});
+  window.addEventListener('mouseup',()=>{down=false;el.classList.remove('drag');});
+  el.addEventListener('mousemove',e=>{ if(!down)return; e.preventDefault(); el.scrollLeft=scroll-(e.pageX-startX)*1.4; });
+}
+
 /* ---- Navigation ---- */
 function go(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -714,15 +854,28 @@ function go(id){
   const key = ORDER.indexOf(id)>-1 ? 'artwork' : id;
   const btn=document.querySelector('nav.primary [data-page="'+key+'"]'); if(btn) btn.classList.add('active');
   document.getElementById('artworkFolder').classList.remove('open');
-  window.scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo({top:0,behavior:'auto'});
+  refreshParallax(); onScrollParallax();
+  requestAnimationFrame(()=>observeReveals(t||document));
 }
 function toggleFolder(e){ e.stopPropagation(); document.getElementById('artworkFolder').classList.toggle('open'); }
 document.addEventListener('click',()=>document.getElementById('artworkFolder').classList.remove('open'));
 
+/* ---- Header solidify on scroll ---- */
+const hdr=document.getElementById('hdr');
+function onScroll(){ if(window.scrollY>40) hdr.classList.add('solid'); else hdr.classList.remove('solid'); onScrollParallax(); }
+let ticking=false;
+window.addEventListener('scroll',()=>{ if(!ticking){ requestAnimationFrame(()=>{onScroll();ticking=false;}); ticking=true; } },{passive:true});
+
 /* ---- Init ---- */
-document.getElementById('bio-portrait-img').src=PORTRAIT;
+const portraitEl=document.getElementById('bio-portrait-img'); if(portraitEl) portraitEl.src=PORTRAIT;
 renderHome();
 ORDER.forEach(renderGallery);
+initLookbookDrag();
+refreshParallax();
+onScroll();
+observeReveals(document.getElementById('page-home'));
+window.addEventListener('resize',()=>{ refreshParallax(); });
 </script>
 </body>
 </html>
