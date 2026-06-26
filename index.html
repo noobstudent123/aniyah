@@ -71,7 +71,8 @@
   @media(max-width:900px){.work{grid-template-columns:repeat(2,1fr);}}
   @media(max-width:560px){.work{grid-template-columns:1fr;}}
 
-  .card{cursor:pointer;}
+  .card{cursor:pointer;animation:fadeUp .7s var(--ease) both;animation-delay:var(--d,0ms);}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
   .card .frame{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--paper);}
   .card .zoom{position:absolute;inset:0;}
   .card .zoom img{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease);}
@@ -672,13 +673,12 @@ let activeFilter="all";
 function counts(){ const c={}; IMAGES.forEach(it=>{c[it.cat]=(c[it.cat]||0)+1;}); return c; }
 
 function cardMarkup(it,i){
-  const variant=VARIANTS[i % VARIANTS.length];
   const delay=(i % 3)*60;
   const meta = it.title
     ? '<div class="meta"><span class="t">'+it.title+'</span><span class="c">'+LABEL[it.cat]+'</span></div>'
     : '<div class="meta"><span class="t"></span><span class="c">'+LABEL[it.cat]+'</span></div>';
-  return '<article class="card rev '+variant+'" data-cat="'+it.cat+'" style="--d:'+delay+'ms" onclick="openAt('+i+')">'+
-           '<div class="frame"><div class="zoom"><img src="'+it.src+'" alt="'+(it.title||LABEL[it.cat])+'" loading="lazy"></div><span class="ovl"></span>'+meta+'</div>'+
+  return '<article class="card" data-cat="'+it.cat+'" style="--d:'+delay+'ms" onclick="openAt('+i+')">'+
+           '<div class="frame"><div class="zoom"><img src="'+it.src+'" alt="'+(it.title||LABEL[it.cat])+'" loading="lazy" onerror="this.closest(\'.card\').style.display=\'none\'"></div><span class="ovl"></span>'+meta+'</div>'+
          '</article>';
 }
 
